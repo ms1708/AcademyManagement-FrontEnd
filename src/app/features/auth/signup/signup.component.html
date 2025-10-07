@@ -1,0 +1,170 @@
+<!-- Sign Up Page -->
+<div class="signup-page">
+  <div class="main-container">
+    <!-- Left Section - Welcome -->
+    <div class="welcome-section">
+      <div class="welcome-overlay"></div>
+      <div class="welcome-content">
+        <h1 class="welcome-title">Start Your Journey</h1>
+        <p class="welcome-description">
+          We're committed to making quality education accessible to all.<br>
+          Join a student-centric learning environment where<br>
+          innovation meets excellence.
+        </p>
+      </div>
+    </div>
+
+    <!-- Right Section - Form -->
+    <div class="form-section">
+      <div class="form-container">
+        <!-- Logo -->
+        <img class="academy-logo" src="https://api.builder.io/api/v1/image/assets/TEMP/18843fada279010a0491d2959a01fd546c3b3efc?width=352" alt="App Logo" />
+
+        <!-- Tab Toggle -->
+        <div class="auth-tabs">
+          <button class="tab-button active">Sign Up</button>
+          <button class="tab-button inactive" (click)="navigateToSignIn()">Sign In</button>
+        </div>
+
+        <!-- Sign Up Form -->
+        <form class="signup-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()">
+          <!-- Name Fields Row -->
+          <div class="name-fields-row">
+            <div class="form-field">
+              <label class="field-label" for="firstName">First Name</label>
+              <input 
+                id="firstName"
+                type="text" 
+                class="field-input"
+                formControlName="firstName"
+                placeholder="First Name"
+                autocomplete="given-name"
+              />
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="lastName">Surname</label>
+              <input
+                id="lastName"
+                type="text"
+                class="field-input"
+                formControlName="lastName"
+                placeholder="Surname"
+                autocomplete="family-name"
+              />
+            </div>
+          </div>
+
+          <!-- Email Field -->
+          <div class="form-field full-width">
+            <label class="field-label" for="email">Email Address</label>
+            <input 
+              id="email"
+              type="email" 
+              class="field-input"
+              formControlName="email"
+              placeholder="Enter your email"
+              autocomplete="email"
+            />
+          </div>
+
+          <!-- Phone Number Field -->
+          <div class="form-field full-width">
+            <label class="field-label" for="phoneNumber">Phone Number</label>
+            <div class="phone-input-container">
+              <div class="country-code-select">
+                <div class="flag-container">
+                  <span class="country-flag">{{ countryFlag }}</span>
+                </div>
+                <div class="country-code">
+                  <span class="code-text">{{ selectedCountryCode }}</span>
+                </div>
+                <svg class="dropdown-icon" width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M4.25 6.16699L8.25 10.167L12.25 6.16699" stroke="#9C9AA5" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <input 
+                id="phoneNumber"
+                type="tel" 
+                class="field-input"
+                formControlName="phoneNumber"
+                placeholder="Phone Number"
+                autocomplete="tel"
+              />
+            </div>
+          </div>
+
+          <!-- Password Fields Row -->
+          <div class="password-fields-row">
+            <div class="form-field">
+              <label class="field-label" for="password">Password</label>
+              <input 
+                id="password"
+                type="password" 
+                class="field-input"
+                formControlName="password"
+                placeholder="Create Password"
+                autocomplete="new-password"
+              />
+            </div>
+            <div class="form-field">
+              <label class="field-label" for="confirmPassword">Confirm Password</label>
+              <input 
+                id="confirmPassword"
+                type="password" 
+                class="field-input"
+                formControlName="confirmPassword"
+                placeholder="Confirm Password"
+                autocomplete="new-password"
+              />
+            </div>
+          </div>
+
+          <!-- Password Requirements -->
+          <div class="password-requirements">
+            <div class="requirement-item">
+              <svg class="requirement-icon" [class.valid]="passwordRequirements.length" width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.3331 4.83301L5.99983 12.1663L2.6665 8.83301" stroke="#9C9AA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="requirement-text">Password Strength: {{ getPasswordStrength() }}</span>
+            </div>
+            <div class="requirement-item">
+              <svg class="requirement-icon" [class.valid]="passwordRequirements.noPersonalInfo" width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.3331 4.83301L5.99983 12.1663L2.6665 8.83301" stroke="#9C9AA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="requirement-text">Cannot contain your name or email address</span>
+            </div>
+            <div class="requirement-item">
+              <svg class="requirement-icon" [class.valid]="passwordRequirements.length" width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.3331 4.83301L5.99983 12.1663L2.6665 8.83301" stroke="#9C9AA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="requirement-text">At least 8 characters</span>
+            </div>
+            <div class="requirement-item">
+              <svg class="requirement-icon" [class.valid]="passwordRequirements.hasNumberOrSymbol" width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.3331 4.83301L5.99983 12.1663L2.6665 8.83301" stroke="#9C9AA5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="requirement-text">Contains a number or symbol</span>
+            </div>
+          </div>
+
+          <!-- Create Account Button -->
+          <button 
+            type="submit" 
+            class="signup-button"
+            [disabled]="signupForm.invalid || isLoading">
+            <span *ngIf="!isLoading">Create Account</span>
+            <span *ngIf="isLoading">Creating Account...</span>
+          </button>
+
+          <!-- Terms and Conditions -->
+          <div class="terms-container">
+            <p class="terms-text">
+              <span class="terms-line-one">By signing up to create an account I accept Company's</span>
+              <span class="terms-line-two">Terms of use & Privacy Policy.</span>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

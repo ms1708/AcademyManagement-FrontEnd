@@ -1,0 +1,502 @@
+// Sign In Component Styles
+// Matching Figma design exactly
+
+// Design-specific color variables
+$page-background: #FEFBFC;
+$welcome-section-bg: #281B20;
+$primary-brand: #B9225F;
+$tab-background: #ECF0FF;
+$white-bg: #FFF;
+$label-text: #281B20;
+$placeholder-text: #9C9AA5;
+$white-text: #FEFBFC;
+$transparent-white: rgba(255, 255, 255, 0.90);
+
+// Main page container
+.signin-page {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  padding-left: 46.667px;
+  justify-content: center;
+  align-items: center;
+  background: $page-background;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.main-container {
+  display: flex;
+  width: 1400px;
+  height: 751.333px;
+  padding: 32px;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 32px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+// Left section - Welcome
+.welcome-section {
+  width: 700px;
+  height: 687px;
+  flex-shrink: 0;
+  border-radius: 51px;
+  background: $welcome-section-bg;
+  position: absolute;
+  left: 32px;
+  top: 32px;
+}
+
+.welcome-overlay {
+  width: 700px;
+  height: 687px;
+  flex-shrink: 0;
+  border-radius: 51px;
+  opacity: 0.3;
+  background: radial-gradient(70.07% 71.37% at 50% 50%, rgba(255, 255, 255, 0.40) 0.21%, rgba(0, 0, 0, 0.00) 0.21%);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.welcome-content {
+  display: flex;
+  width: 604px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  position: absolute;
+  left: 48px;
+  top: 259px;
+  height: 162px;
+}
+
+.welcome-title {
+  display: flex;
+  height: 50px;
+  align-items: center;
+  color: $white-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 50px;
+  margin: 0;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.welcome-description {
+  width: 100%;
+  color: $transparent-white;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 29.25px;
+  margin: 0;
+}
+
+// Right section - Form
+.form-section {
+  display: flex;
+  width: 604px;
+  padding: 32px 0 32px 2px;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-shrink: 0;
+  position: absolute;
+  left: 764px;
+  top: 32px;
+  height: 687px;
+}
+
+.form-container {
+  display: flex;
+  width: 600px;
+  padding: 90.917px 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  flex: 1 0 0;
+  position: relative;
+}
+
+// Logo
+.academy-logo {
+  width: 176px;
+  height: 49px;
+  position: absolute;
+  left: 212px;
+  top: 91px;
+}
+
+// Auth tabs
+.auth-tabs {
+  display: flex;
+  height: 47px;
+  padding: 4px 4px 0 4px;
+  align-items: flex-start;
+  gap: 4px;
+  border-radius: 8px;
+  background: $tab-background;
+  position: absolute;
+  left: 0;
+  top: 172px;
+  width: 600px;
+}
+
+.tab-button {
+  display: flex;
+  height: 38.5px;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22.5px;
+  transition: all 0.3s ease;
+
+  &.inactive {
+    background: transparent;
+    color: $placeholder-text;
+  }
+
+  &.active {
+    background: $primary-brand;
+    color: $white-text;
+  }
+}
+
+// Form
+.signin-form {
+  display: flex;
+  width: 600px;
+  height: 282px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 24px;
+  position: absolute;
+  left: 0;
+  top: 250px;
+}
+
+.form-field {
+  display: flex;
+  width: 600px;
+  height: 72px;
+  padding-top: 2px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2.667px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+.field-label {
+  color: $label-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  margin-bottom: 2.667px;
+}
+
+.field-input {
+  display: flex;
+  height: 48px;
+  padding: 0 16px;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 0.667px solid $primary-brand;
+  background: $white-bg;
+  box-shadow: 0 4px 8px 0 rgba(70, 95, 241, 0.10);
+  width: 100%;
+  color: $label-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  outline: none;
+
+  &::placeholder {
+    color: $placeholder-text;
+  }
+
+  &:focus {
+    border-color: $primary-brand;
+    box-shadow: 0 4px 8px 0 rgba(70, 95, 241, 0.10), 0 0 0 2px rgba($primary-brand, 0.2);
+  }
+}
+
+// Forgot password
+.forgot-password-container {
+  display: flex;
+  height: 18px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: -8px;
+}
+
+.forgot-password-link {
+  color: $placeholder-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: $primary-brand;
+  }
+}
+
+// Sign in button
+.signin-button {
+  display: flex;
+  height: 48px;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: $primary-brand;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  color: $white-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22.5px;
+  transition: all 0.3s ease;
+
+  &:hover:not(:disabled) {
+    background: darken($primary-brand, 5%);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    background: darken($primary-brand, 10%);
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Responsive design
+@media (max-width: 1600px) {
+  .signin-page {
+    padding-left: 24px;
+  }
+
+  .main-container {
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .welcome-section {
+    width: 50%;
+    min-width: 500px;
+  }
+
+  .form-section {
+    width: 45%;
+    min-width: 450px;
+    left: calc(50% + 16px);
+  }
+}
+
+@media (max-width: 1200px) {
+  .signin-page {
+    padding: 16px;
+    flex-direction: column;
+  }
+
+  .main-container {
+    flex-direction: column;
+    height: auto;
+    max-width: 600px;
+    gap: 24px;
+  }
+
+  .welcome-section {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 300px;
+    border-radius: 24px;
+  }
+
+  .welcome-content {
+    left: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(100% - 64px);
+  }
+
+  .welcome-title {
+    font-size: 32px;
+    padding-right: 0;
+    width: 100%;
+  }
+
+  .welcome-description {
+    width: 100%;
+  }
+
+  .form-section {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    padding: 32px 0;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 32px 0;
+  }
+
+  .academy-logo {
+    position: relative;
+    left: 0;
+    top: 0;
+    margin-bottom: 24px;
+  }
+
+  .auth-tabs {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .signin-form {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .signin-page {
+    padding: 12px;
+  }
+
+  .welcome-section {
+    height: 250px;
+    border-radius: 16px;
+  }
+
+  .welcome-content {
+    left: 24px;
+    width: calc(100% - 48px);
+  }
+
+  .welcome-title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .welcome-description {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .form-container {
+    padding: 24px 0;
+  }
+
+  .academy-logo {
+    width: 140px;
+    height: auto;
+  }
+
+  .form-field {
+    width: 100%;
+  }
+
+  .field-input {
+    font-size: 16px; // Prevent zoom on iOS
+  }
+}
+
+@media (max-width: 480px) {
+  .signin-page {
+    padding: 8px;
+  }
+
+  .main-container {
+    gap: 16px;
+  }
+
+  .welcome-section {
+    height: 200px;
+  }
+
+  .welcome-content {
+    left: 16px;
+    width: calc(100% - 32px);
+    gap: 16px;
+  }
+
+  .welcome-title {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .welcome-description {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .academy-logo {
+    width: 120px;
+  }
+
+  .tab-button {
+    font-size: 14px;
+  }
+
+  .field-label {
+    font-size: 14px;
+  }
+
+  .signin-button {
+    height: 44px;
+    font-size: 14px;
+  }
+}

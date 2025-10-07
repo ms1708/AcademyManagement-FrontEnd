@@ -1,0 +1,666 @@
+// Sign Up Component Styles
+// Fixed alignment and layout issues
+
+// Design-specific color variables
+$page-background: #FEFBFC;
+$welcome-section-bg: #281B20;
+$primary-brand: #B9225F;
+$tab-background: #ECF0FF;
+$white-bg: #FFF;
+$label-text: #281B20;
+$placeholder-text: #9C9AA5;
+$white-text: #FEFBFC;
+$transparent-white: rgba(255, 255, 255, 0.90);
+$requirements-bg: #F9FAFB;
+$requirement-text: #26203B;
+$text-dark: #0A0A0A;
+
+// Main page container
+.signup-page {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  padding: 46.667px;
+  justify-content: center;
+  align-items: center;
+  background: $page-background;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+}
+
+.main-container {
+  display: flex;
+  width: 1400px;
+  height: 751.333px;
+  padding: 32px;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  flex-shrink: 0;
+  position: relative;
+}
+
+// Left section - Welcome
+.welcome-section {
+  width: 700px;
+  height: 687px;
+  flex-shrink: 0;
+  border-radius: 51px;
+  background: $welcome-section-bg;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome-overlay {
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  border-radius: 51px;
+  opacity: 0.3;
+  background: radial-gradient(70.07% 71.37% at 50% 50%, rgba(255, 255, 255, 0.40) 0.21%, rgba(0, 0, 0, 0.00) 0.21%);
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.welcome-content {
+  display: flex;
+  width: 604px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-title {
+  color: $white-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 50px;
+  margin: 0;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.welcome-description {
+  color: $transparent-white;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 29.25px;
+  margin: 0;
+  width: 100%;
+}
+
+// Right section - Form
+.form-section {
+  display: flex;
+  width: 604px;
+  padding: 32px 0;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+  height: 687px;
+}
+
+.form-container {
+  display: flex;
+  width: 600px;
+  padding: 32px 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  flex: 1 0 0;
+  position: relative;
+}
+
+// Logo
+.academy-logo {
+  width: 176px;
+  height: 49px;
+  position: relative;
+  margin-bottom: 24px;
+  align-self: center;
+}
+
+// Auth tabs
+.auth-tabs {
+  display: flex;
+  height: 47px;
+  padding: 4px;
+  align-items: flex-start;
+  gap: 4px;
+  border-radius: 8px;
+  background: $tab-background;
+  position: relative;
+  width: 600px;
+  margin-bottom: 32px;
+  align-self: center;
+}
+
+.tab-button {
+  display: flex;
+  height: 38.5px;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  flex: 1 0 0;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 22.5px;
+  transition: all 0.3s ease;
+
+  &.inactive {
+    background: transparent;
+    color: $placeholder-text;
+  }
+
+  &.active {
+    background: $primary-brand;
+    color: $white-text;
+  }
+}
+
+// Form
+.signup-form {
+  display: flex;
+  width: 600px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 24px;
+  position: relative;
+}
+
+// Name fields row
+.name-fields-row {
+  display: flex;
+  width: 600px;
+  gap: 16px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+// Password fields row
+.password-fields-row {
+  display: flex;
+  width: 600px;
+  gap: 16px;
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2.667px;
+  flex: 1 0 0;
+  position: relative;
+
+  // Full width fields
+  &.full-width {
+    width: 600px;
+    align-self: center;
+  }
+}
+
+.field-label {
+  color: $label-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  margin-bottom: 2.667px;
+}
+
+.field-input {
+  display: flex;
+  height: 48px;
+  padding: 0 16px;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 0.667px solid $primary-brand;
+  background: $white-bg;
+  box-shadow: 0 4px 8px 0 rgba(70, 95, 241, 0.10);
+  width: 100%;
+  color: $label-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  outline: none;
+
+  &::placeholder {
+    color: $placeholder-text;
+  }
+
+  &:focus {
+    border-color: $primary-brand;
+    box-shadow: 0 4px 8px 0 rgba(70, 95, 241, 0.10), 0 0 0 2px rgba($primary-brand, 0.2);
+  }
+}
+
+// Phone input container
+.phone-input-container {
+  display: flex;
+  height: 48px;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  
+  .field-input {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+.country-code-select {
+  display: flex;
+  width: 70px;
+  height: 48px;
+  padding: 0 6px;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  border: 0.667px solid $primary-brand;
+  background: $white-bg;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.flag-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.country-flag {
+  color: $text-dark;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.country-code {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.code-text {
+  color: $label-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.dropdown-icon {
+  width: 12px;
+  height: 12px;
+  flex-shrink: 0;
+}
+
+// Password requirements
+.password-requirements {
+  display: flex;
+  width: 600px;
+  padding: 16px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: $requirements-bg;
+  align-self: center;
+}
+
+.requirement-item {
+  display: flex;
+  height: 18px;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  align-self: stretch;
+}
+
+.requirement-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+
+  &.valid path {
+    stroke: #4caf50;
+  }
+}
+
+.requirement-text {
+  color: $requirement-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  flex: 1;
+}
+
+// Create Account Button
+.signup-button {
+  display: flex;
+  height: 48px;
+  padding: 8px 16px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: $primary-brand;
+  border: none;
+  cursor: pointer;
+  width: 600px;
+  color: $white-text;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22.5px;
+  transition: all 0.3s ease;
+  align-self: center;
+
+  &:hover:not(:disabled) {
+    background: darken($primary-brand, 5%);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    background: darken($primary-brand, 10%);
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// Terms and Conditions
+.terms-container {
+  width: 600px;
+  flex-shrink: 0;
+  text-align: center;
+  align-self: center;
+}
+
+.terms-text {
+  margin: 0;
+  font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 15px;
+}
+
+.terms-line-one {
+  color: $placeholder-text;
+}
+
+.terms-line-two {
+  color: $requirement-text;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+// Responsive design
+@media (max-width: 1600px) {
+  .signup-page {
+    padding: 24px;
+  }
+
+  .main-container {
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .welcome-section {
+    width: 50%;
+    min-width: 500px;
+  }
+
+  .form-section {
+    width: 45%;
+    min-width: 450px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .signup-page {
+    padding: 16px;
+    flex-direction: column;
+  }
+
+  .main-container {
+    flex-direction: column;
+    height: auto;
+    max-width: 600px;
+    gap: 24px;
+  }
+
+  .welcome-section {
+    position: relative;
+    width: 100%;
+    height: 300px;
+    border-radius: 24px;
+  }
+
+  .welcome-content {
+    width: calc(100% - 64px);
+    padding: 32px;
+  }
+
+  .welcome-title {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  .welcome-description {
+    font-size: 16px;
+    line-height: 24px;
+    
+    br {
+      display: none;
+    }
+  }
+
+  .form-section {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 32px 0;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 32px 0;
+    height: auto;
+  }
+
+  .academy-logo {
+    position: relative;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    margin-bottom: 24px;
+  }
+
+  .auth-tabs {
+    position: relative;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .signup-form {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  .name-fields-row,
+  .password-fields-row {
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .form-field {
+    &.full-width {
+      width: 100%;
+      margin-bottom: 16px;
+    }
+  }
+
+  .password-requirements {
+    width: 100%;
+    margin: 16px 0;
+  }
+
+  .signup-button {
+    width: 100%;
+    margin: 16px 0;
+  }
+
+  .terms-container {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .signup-page {
+    padding: 12px;
+  }
+
+  .welcome-section {
+    height: 250px;
+    border-radius: 16px;
+  }
+
+  .welcome-content {
+    padding: 24px;
+  }
+
+  .welcome-title {
+    font-size: 28px;
+    line-height: 36px;
+  }
+
+  .welcome-description {
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .form-container {
+    padding: 24px 0;
+  }
+
+  .academy-logo {
+    width: 140px;
+    height: auto;
+  }
+
+  .name-fields-row,
+  .password-fields-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .field-input {
+    font-size: 16px; // Prevent zoom on iOS
+  }
+
+  .country-code-select {
+    width: 80px;
+  }
+}
+
+@media (max-width: 480px) {
+  .signup-page {
+    padding: 8px;
+  }
+
+  .main-container {
+    gap: 16px;
+  }
+
+  .welcome-section {
+    height: 200px;
+  }
+
+  .welcome-content {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .welcome-title {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .welcome-description {
+    font-size: 14px;
+    line-height: 20px;
+  }
+
+  .academy-logo {
+    width: 120px;
+  }
+
+  .tab-button {
+    font-size: 14px;
+  }
+
+  .field-label {
+    font-size: 14px;
+  }
+
+  .signup-button {
+    height: 44px;
+    font-size: 14px;
+  }
+
+  .country-code-select {
+    width: 70px;
+    padding: 0 8px;
+  }
+
+  .requirement-text {
+    font-size: 11px;
+  }
+
+  .terms-text {
+    font-size: 9px;
+  }
+}

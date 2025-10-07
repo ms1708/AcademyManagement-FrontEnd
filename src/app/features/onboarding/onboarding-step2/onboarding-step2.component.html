@@ -1,0 +1,185 @@
+<!-- Onboarding Step 2 Page -->
+<div class="onboarding-page">
+  <div class="main-container">
+    <!-- Left Section - Context -->
+    <div class="context-section">
+      <div class="context-overlay"></div>
+      <div class="context-content">
+        <!-- Icon -->
+        <div class="context-icon">
+          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="20" cy="20" r="20" fill="currentColor"/>
+            <path d="M20 8L24 16H32L26 22L28 32L20 28L12 32L14 22L8 16H16L20 8Z" fill="white"/>
+          </svg>
+        </div>
+        
+        <!-- Heading -->
+        <h1 class="context-title">Additional Details</h1>
+        
+        <!-- Description -->
+        <p class="context-description">
+          Help us understand your background better. Your language preferences and location details allow us to provide relevant support and connect you with local resources.
+        </p>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+          <div class="progress-info">
+            <span class="progress-text">Step {{ getCurrentStep() }} of {{ getTotalSteps() }}</span>
+            <span class="progress-percentage">{{ getProgressPercentage() }}%</span>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Section - Form -->
+    <div class="form-section">
+      <div class="form-container">
+        <!-- Logo -->
+        <img class="academy-logo" src="https://api.builder.io/api/v1/image/assets/TEMP/d765edc4a278dc4383d842745293ea933870fd0c?width=352" alt="App Logo" />
+
+        <!-- Form Title -->
+        <h2 class="form-title">Additional Learner Details</h2>
+
+        <!-- Form -->
+        <form class="additional-details-form" [formGroup]="additionalDetailsForm" (ngSubmit)="onSubmit()">
+          <!-- Home Language Field -->
+          <div class="form-field">
+            <label class="field-label" for="homeLanguage">Home Language *</label>
+            <input
+              id="homeLanguage"
+              type="text"
+              class="field-input"
+              formControlName="homeLanguage"
+              placeholder="Enter your home language" />
+            <span *ngIf="isFieldInvalid('homeLanguage')" class="error-message">{{ getFieldError('homeLanguage') }}</span>
+          </div>
+
+          <!-- Citizenship Field -->
+          <div class="form-field">
+            <label class="field-label" for="citizenship">Citizenship *</label>
+            <input
+              id="citizenship"
+              type="text"
+              class="field-input"
+              formControlName="citizenship"
+              placeholder="Enter your citizenship" />
+            <span *ngIf="isFieldInvalid('citizenship')" class="error-message">{{ getFieldError('citizenship') }}</span>
+          </div>
+
+          <!-- Home Address Field -->
+          <div class="form-field">
+            <label class="field-label" for="homeAddress">Home Address *</label>
+            <input
+              id="homeAddress"
+              type="text"
+              class="field-input"
+              formControlName="homeAddress"
+              placeholder="Enter your home address" />
+            <span *ngIf="isFieldInvalid('homeAddress')" class="error-message">{{ getFieldError('homeAddress') }}</span>
+          </div>
+
+          <!-- Address Line 2 Field -->
+          <div class="form-field">
+            <label class="field-label" for="addressLine2">Address Line 2</label>
+            <input
+              id="addressLine2"
+              type="text"
+              class="field-input"
+              formControlName="addressLine2"
+              placeholder="Enter address line 2" />
+          </div>
+
+          <!-- Postal Address Section -->
+          <div class="form-field">
+            <label class="field-label">Postal Address</label>
+          </div>
+
+          <!-- Postal Address Line 1 Field -->
+          <div class="form-field">
+            <label class="field-label" for="postalAddressLine1">Address Line 1</label>
+            <input
+              id="postalAddressLine1"
+              type="text"
+              class="field-input"
+              formControlName="postalAddressLine1"
+              placeholder="Enter postal address line 1" />
+          </div>
+
+          <!-- Postal Address Line 2 Field -->
+          <div class="form-field">
+            <label class="field-label" for="postalAddressLine2">Address Line 2</label>
+            <input
+              id="postalAddressLine2"
+              type="text"
+              class="field-input"
+              formControlName="postalAddressLine2"
+              placeholder="Enter postal address line 2" />
+          </div>
+
+          <!-- City and Province Row -->
+          <div class="form-row">
+            <!-- City Field -->
+            <div class="form-field form-field-half">
+              <label class="field-label" for="city">City *</label>
+              <input
+                id="city"
+                type="text"
+                class="field-input"
+                formControlName="city"
+                placeholder="Enter city" />
+              <span *ngIf="isFieldInvalid('city')" class="error-message">{{ getFieldError('city') }}</span>
+            </div>
+
+            <!-- Province/State Field -->
+            <div class="form-field form-field-half">
+              <label class="field-label" for="provinceState">Province/State *</label>
+              <input
+                id="provinceState"
+                type="text"
+                class="field-input"
+                formControlName="provinceState"
+                placeholder="Enter province/state" />
+              <span *ngIf="isFieldInvalid('provinceState')" class="error-message">{{ getFieldError('provinceState') }}</span>
+            </div>
+          </div>
+
+          <!-- Municipality Field -->
+          <div class="form-field">
+            <label class="field-label" for="municipality">Municipality</label>
+            <input
+              id="municipality"
+              type="text"
+              class="field-input"
+              formControlName="municipality"
+              placeholder="Enter municipality" />
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="button-row">
+            <!-- Back Button -->
+            <button
+              type="button"
+              class="back-button"
+              (click)="onBack()"
+              [disabled]="isLoading">
+              Back
+            </button>
+
+            <!-- Next Button -->
+            <button
+              type="submit"
+              class="next-button"
+              [disabled]="!isFormValid() || isLoading">
+              <span *ngIf="!isLoading">Next</span>
+              <span *ngIf="isLoading">Processing...</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
