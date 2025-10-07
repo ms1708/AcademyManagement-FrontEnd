@@ -1,0 +1,288 @@
+<div class="course-application">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1 class="page-title">Course Application</h1>
+    <p class="page-subtitle">Complete your course application in 4 simple steps</p>
+    
+    <!-- Progress Indicator -->
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-step active" [class.completed]="currentStep > 1">
+          <div class="step-circle">1</div>
+          <div class="step-line" [class.active]="currentStep > 1"></div>
+        </div>
+        <div class="progress-step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2">
+          <div class="step-circle">2</div>
+          <div class="step-line" [class.active]="currentStep > 2"></div>
+        </div>
+        <div class="progress-step" [class.active]="currentStep === 3" [class.completed]="currentStep > 3">
+          <div class="step-circle">3</div>
+          <div class="step-line" [class.active]="currentStep > 3"></div>
+        </div>
+        <div class="progress-step" [class.active]="currentStep === 4">
+          <div class="step-circle">4</div>
+        </div>
+      </div>
+      <div class="progress-text">Step {{ currentStep }} of 4</div>
+    </div>
+  </div>
+
+  <!-- Main Content Card -->
+  <div class="content-card">
+    <!-- Step 1: Review Information -->
+    <div *ngIf="currentStep === 1" class="step-content">
+      <div class="section">
+        <h2 class="section-title">Review Your Information</h2>
+        <p class="section-description">
+          We've pre-filled your information from your profile. Please review and add any missing details.
+        </p>
+        
+        <!-- Confirmed Information -->
+        <div class="confirmed-info">
+          <div class="confirmed-header">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22,4 12,14.01 9,11.01"></polyline>
+            </svg>
+            <span>Confirmed Information from Your Profile</span>
+          </div>
+          
+          <div class="info-grid">
+            <div class="info-column">
+              <div class="info-item">
+                <label>Full Name:</label>
+                <span>{{ userInfo.fullName }}</span>
+              </div>
+              <div class="info-item">
+                <label>Contact Number:</label>
+                <span>{{ userInfo.contactNumber }}</span>
+              </div>
+              <div class="info-item">
+                <label>ID Number:</label>
+                <span>{{ userInfo.idNumber }}</span>
+              </div>
+              <div class="info-item">
+                <label>Nationality:</label>
+                <span>{{ userInfo.nationality }}</span>
+              </div>
+              <div class="info-item">
+                <label>Home Address:</label>
+                <span>{{ userInfo.homeAddress }}</span>
+              </div>
+            </div>
+            
+            <div class="info-column">
+              <div class="info-item">
+                <label>Email:</label>
+                <span>{{ userInfo.email }}</span>
+              </div>
+              <div class="info-item">
+                <label>Date of Birth:</label>
+                <span>{{ userInfo.dateOfBirth }}</span>
+              </div>
+              <div class="info-item">
+                <label>Gender:</label>
+                <span>{{ userInfo.gender }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="section">
+        <h2 class="section-title accent">Additional Information</h2>
+        
+        <div class="form-group">
+          <label for="middleName">Middle Name</label>
+          <input 
+            type="text" 
+            id="middleName" 
+            [(ngModel)]="applicationData.middleName"
+            placeholder="Optional">
+        </div>
+        
+        <div class="form-group">
+          <label for="homeTelephone">Home Telephone</label>
+          <input 
+            type="text" 
+            id="homeTelephone" 
+            [(ngModel)]="applicationData.homeTelephone"
+            placeholder="Optional">
+        </div>
+        
+        <div class="form-group required">
+          <label for="maritalStatus">Marital Status *</label>
+          <select id="maritalStatus" [(ngModel)]="applicationData.maritalStatus">
+            <option value="">Select Marital Status</option>
+            <option value="single">Single</option>
+            <option value="married">Married</option>
+            <option value="divorced">Divorced</option>
+            <option value="widowed">Widowed</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Course Selection -->
+    <div *ngIf="currentStep === 2" class="step-content">
+      <div class="section">
+        <h2 class="section-title">Select Your Course</h2>
+        <p class="section-description">
+          Choose the course you wish to apply for. Review the details carefully before proceeding.
+        </p>
+        
+        <div class="course-grid">
+          <div class="course-card" 
+               *ngFor="let course of availableCourses" 
+               [class.selected]="applicationData.selectedCourse === course.id"
+               (click)="selectCourse(course.id)">
+            <div class="course-header">
+              <h3>{{ course.name }}</h3>
+              <span class="course-duration">{{ course.duration }}</span>
+            </div>
+            <p class="course-description">{{ course.description }}</p>
+            <div class="course-details">
+              <div class="detail-item">
+                <span class="detail-label">Fee:</span>
+                <span class="detail-value">{{ course.fee }}</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Start Date:</span>
+                <span class="detail-value">{{ course.startDate }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Documents Upload -->
+    <div *ngIf="currentStep === 3" class="step-content">
+      <div class="section">
+        <h2 class="section-title">Upload Required Documents</h2>
+        <p class="section-description">
+          Please upload the required documents to complete your application.
+        </p>
+        
+        <div class="documents-list">
+          <div class="document-item" *ngFor="let doc of requiredDocuments">
+            <div class="document-info">
+              <h4>{{ doc.name }}</h4>
+              <p>{{ doc.description }}</p>
+              <span class="document-status" [class.uploaded]="doc.uploaded">
+                {{ doc.uploaded ? 'Uploaded' : 'Required' }}
+              </span>
+            </div>
+            <div class="document-upload">
+              <input type="file" 
+                     [id]="doc.id" 
+                     (change)="onFileSelected($event, doc.id)"
+                     accept=".pdf,.jpg,.jpeg,.png"
+                     style="display: none;">
+              <label [for]="doc.id" class="upload-btn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17,8 12,3 7,8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                Upload
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Review and Submit -->
+    <div *ngIf="currentStep === 4" class="step-content">
+      <div class="section">
+        <h2 class="section-title">Review Your Application</h2>
+        <p class="section-description">
+          Please review all the information before submitting your application.
+        </p>
+        
+        <div class="review-summary">
+          <div class="summary-section">
+            <h3>Personal Information</h3>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span class="summary-label">Full Name:</span>
+                <span class="summary-value">{{ userInfo.fullName }} {{ applicationData.middleName }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Email:</span>
+                <span class="summary-value">{{ userInfo.email }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Contact:</span>
+                <span class="summary-value">{{ userInfo.contactNumber }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Marital Status:</span>
+                <span class="summary-value">{{ applicationData.maritalStatus }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="summary-section">
+            <h3>Course Selection</h3>
+            <div class="course-summary" *ngIf="selectedCourseDetails">
+              <h4>{{ selectedCourseDetails.name }}</h4>
+              <p>{{ selectedCourseDetails.description }}</p>
+              <div class="course-summary-details">
+                <span>Duration: {{ selectedCourseDetails.duration }}</span>
+                <span>Fee: {{ selectedCourseDetails.fee }}</span>
+                <span>Start Date: {{ selectedCourseDetails.startDate }}</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="summary-section">
+            <h3>Documents</h3>
+            <div class="documents-summary">
+              <div class="doc-item" *ngFor="let doc of requiredDocuments">
+                <span class="doc-name">{{ doc.name }}</span>
+                <span class="doc-status" [class.uploaded]="doc.uploaded">
+                  {{ doc.uploaded ? '✓ Uploaded' : '✗ Missing' }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="navigation-buttons">
+      <button *ngIf="currentStep > 1" 
+              class="btn btn-secondary" 
+              (click)="previousStep()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="15,18 9,12 15,6"></polyline>
+        </svg>
+        Previous
+      </button>
+      
+      <button *ngIf="currentStep < 4" 
+              class="btn btn-primary" 
+              (click)="nextStep()"
+              [disabled]="!canProceed()">
+        Next
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="9,18 15,12 9,6"></polyline>
+        </svg>
+      </button>
+      
+      <button *ngIf="currentStep === 4" 
+              class="btn btn-primary" 
+              (click)="submitApplication()"
+              [disabled]="!canSubmit()">
+        Submit Application
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M22 2L11 13"></path>
+          <polygon points="22,2 15,22 11,13 2,9 22,2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>

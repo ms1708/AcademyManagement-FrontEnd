@@ -57,8 +57,8 @@ export class OnboardingStep3Component {
         this.isLoading = false;
         this.errorLoggingService.logError('info', `Onboarding completed successfully for user`);
         
-        // Navigate to dashboard or success page
-        this.router.navigate(['/dashboard']);
+        // Navigate to student portal after onboarding completion
+        this.router.navigate(['/student-portal/course-application']);
       }, 2000);
     } else {
       this.markFormGroupTouched();
