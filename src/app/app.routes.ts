@@ -54,35 +54,31 @@ export const routes: Routes = [
     ]
   },
 
-  // Student Portal routes
+  // Student Portal (Builder.io version)
   {
     path: 'student-portal',
-    loadComponent: () => import('./features/student-portal/student-portal/student-portal.component').then(m => m.StudentPortalComponent),
-    children: [
-      {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full'
-      },
-      {
-        path: 'dashboard',
-        loadComponent: () => import('./features/student-portal/dashboard/dashboard.component').then(m => m.DashboardComponent)
-      },
-      {
-        path: 'course-application',
-        loadComponent: () => import('./features/student-portal/course-application/course-application.component').then(m => m.CourseApplicationComponent)
-      },
-      {
-        path: 'my-enrollment',
-        loadComponent: () => import('./features/student-portal/my-enrollment/my-enrollment.component').then(m => m.MyEnrollmentComponent)
-      }
-    ]
+    loadComponent: () => import('./features/student-portal/student-portal/student-portal.component').then(m => m.StudentPortalComponent)
   },
 
-  // Dashboard route (legacy - redirect to student portal)
+  // Legacy routes - redirect to student portal
   {
     path: 'dashboard',
-    redirectTo: '/student-portal/dashboard',
+    redirectTo: '/student-portal',
+    pathMatch: 'full'
+  },
+  {
+    path: 'student-portal/dashboard',
+    redirectTo: '/student-portal',
+    pathMatch: 'full'
+  },
+  {
+    path: 'student-portal/course-application',
+    redirectTo: '/student-portal',
+    pathMatch: 'full'
+  },
+  {
+    path: 'student-portal/my-enrollment',
+    redirectTo: '/student-portal',
     pathMatch: 'full'
   },
 
