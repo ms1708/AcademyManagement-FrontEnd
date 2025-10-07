@@ -334,7 +334,182 @@ $transparent-white: rgba(255, 255, 255, 0.90);
   }
 }
 
-@media (max-width: 1200px) {
+// Split-screen view for large monitors (1000px - 1199px)
+@media (max-width: 1199px) and (min-width: 1000px) {
+  .signin-page {
+    padding: 20px;
+    flex-direction: column;
+  }
+
+  .main-container {
+    flex-direction: column;
+    height: auto;
+    max-width: 800px;
+    gap: 20px;
+  }
+
+  .welcome-section {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 260px;
+    border-radius: 28px;
+  }
+
+  .welcome-content {
+    left: 28px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(100% - 56px);
+    gap: 14px;
+  }
+
+  .welcome-title {
+    font-size: 32px;
+    line-height: 42px;
+    padding-right: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .welcome-description {
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
+    line-height: 24px;
+  }
+
+  .form-section {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    border-radius: 28px;
+    padding: 28px 0;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 28px 0;
+  }
+
+  .academy-logo {
+    position: relative;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    margin-bottom: 20px;
+  }
+
+  .auth-tabs {
+    position: relative;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .signin-form {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+  }
+}
+
+// Narrow split-screen view (800px - 999px)
+@media (max-width: 999px) and (min-width: 800px) {
+  .signin-page {
+    padding: 16px;
+    flex-direction: column;
+  }
+
+  .main-container {
+    flex-direction: column;
+    height: auto;
+    max-width: 700px;
+    gap: 18px;
+  }
+
+  .welcome-section {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 240px;
+    border-radius: 24px;
+  }
+
+  .welcome-content {
+    left: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: calc(100% - 48px);
+    gap: 12px;
+  }
+
+  .welcome-title {
+    font-size: 28px;
+    line-height: 38px;
+    padding-right: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .welcome-description {
+    width: 100%;
+    text-align: center;
+    font-size: 15px;
+    line-height: 22px;
+  }
+
+  .form-section {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+    border-radius: 24px;
+    padding: 24px 0;
+  }
+
+  .form-container {
+    width: 100%;
+    padding: 24px 0;
+  }
+
+  .academy-logo {
+    position: relative;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    margin-bottom: 18px;
+  }
+
+  .auth-tabs {
+    position: relative;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    width: 100%;
+    margin-bottom: 18px;
+  }
+
+  .signin-form {
+    position: relative;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: auto;
+  }
+}
+
+// Standard responsive breakpoint (below 800px)
+@media (max-width: 799px) {
   .signin-page {
     padding: 16px;
     flex-direction: column;
