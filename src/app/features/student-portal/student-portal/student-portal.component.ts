@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserInformation, AdditionalInformation, EducationalBackground, WorkBackground, ViewType } from '../../../core/models/user-info.model';
+import { UserInformation, AdditionalInformation, EducationalBackground, WorkBackground, ProgrammeDetails, ViewType } from '../../../core/models/user-info.model';
 
 @Component({
   selector: 'app-student-portal',
@@ -15,7 +15,7 @@ export class StudentPortalComponent implements OnInit {
   private router = inject(Router);
 
   currentView: ViewType = 'course-application';
-  currentStep: number = 2; // Start at step 2 for educational background
+  currentStep: number = 3; // Start at step 3 for programme details
 
   userInfo: UserInformation = {
     fullName: 'Thandi Dlovu',
@@ -46,6 +46,13 @@ export class StudentPortalComponent implements OnInit {
 
   workBackground: WorkBackground = {
     socioEconomicStatus: ''
+  };
+
+  programmeDetails: ProgrammeDetails = {
+    courseName: '',
+    hasComputer: false,
+    hasInternet: false,
+    hasLibrary: false
   };
 
   ngOnInit(): void {
@@ -104,25 +111,32 @@ export class StudentPortalComponent implements OnInit {
   }
 
   // Method to handle form validation based on current step
-  isFormValid(): boolean {
-    switch (this.currentStep) {
-      case 1:
-        return !!this.additionalInfo.maritalStatus;
-      case 2:
-        return !!(
-          this.educationalBackground.lastSchoolAttended &&
-          this.educationalBackground.highestGrade &&
-          this.educationalBackground.dateGradeObtained &&
-          this.educationalBackground.highestQualification &&
-          this.educationalBackground.qualificationName &&
-          this.educationalBackground.yearObtained &&
-          this.educationalBackground.institutionAttended &&
-          this.workBackground.socioEconomicStatus
-        );
-      default:
-        return true;
-    }
-  }
+         isFormValid(): boolean {
+           switch (this.currentStep) {
+             case 1:
+               return !!this.additionalInfo.maritalStatus;
+             case 2:
+               return !!(
+                 this.educationalBackground.lastSchoolAttended &&
+                 this.educationalBackground.highestGrade &&
+                 this.educationalBackground.dateGradeObtained &&
+                 this.educationalBackground.highestQualification &&
+                 this.educationalBackground.qualificationName &&
+                 this.educationalBackground.yearObtained &&
+                 this.educationalBackground.institutionAttended &&
+                 this.workBackground.socioEconomicStatus
+               );
+             case 3:
+               return !!(
+                 this.programmeDetails.courseName &&
+                 (this.programmeDetails.hasComputer || 
+                  this.programmeDetails.hasInternet || 
+                  this.programmeDetails.hasLibrary)
+               );
+             default:
+               return true;
+           }
+         }
 
   // Method to handle saving draft
   saveDraft(): void {
@@ -131,6 +145,7 @@ export class StudentPortalComponent implements OnInit {
       additionalInfo: this.additionalInfo,
       educationalBackground: this.educationalBackground,
       workBackground: this.workBackground,
+      programmeDetails: this.programmeDetails,
       currentStep: this.currentStep,
       timestamp: new Date().toISOString()
     };
@@ -149,6 +164,7 @@ export class StudentPortalComponent implements OnInit {
         this.additionalInfo = parsed.additionalInfo || this.additionalInfo;
         this.educationalBackground = parsed.educationalBackground || this.educationalBackground;
         this.workBackground = parsed.workBackground || this.workBackground;
+        this.programmeDetails = parsed.programmeDetails || this.programmeDetails;
         this.currentStep = parsed.currentStep || this.currentStep;
         console.log('Draft loaded:', parsed);
       } catch (error) {

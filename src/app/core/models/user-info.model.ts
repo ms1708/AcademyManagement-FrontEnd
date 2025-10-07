@@ -29,11 +29,19 @@ export interface WorkBackground {
   socioEconomicStatus: string;
 }
 
+export interface ProgrammeDetails {
+  courseName: string;
+  hasComputer: boolean;
+  hasInternet: boolean;
+  hasLibrary: boolean;
+}
+
 export interface CourseApplicationData {
   userInfo: UserInformation;
   additionalInfo: AdditionalInformation;
   educationalBackground?: EducationalBackground;
   workBackground?: WorkBackground;
+  programmeDetails?: ProgrammeDetails;
   currentStep: number;
   selectedCourse?: string;
   uploadedDocuments?: string[];

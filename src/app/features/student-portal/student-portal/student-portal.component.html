@@ -95,7 +95,7 @@
         <div class="form-card">
           <div class="form-content">
             <!-- Educational and Work Background Section -->
-            <div class="educational-work-section">
+            <div class="educational-work-section" *ngIf="currentStep === 2">
               <h2 class="section-title">Educational and Work Background</h2>
 
               <!-- Educational Background -->
@@ -170,6 +170,51 @@
                     </select>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            <!-- Programme Details Section (Step 3) -->
+            <div class="programme-details-section" *ngIf="currentStep === 3">
+              <h2 class="section-title">Details of Programme Applying</h2>
+
+              <!-- Course Name -->
+              <div class="form-row">
+                <div class="form-group full-width">
+                  <label class="form-label">Course Name *</label>
+                  <input type="text" class="form-input" placeholder="Enter course name" [(ngModel)]="programmeDetails.courseName" (ngModelChange)="onFormChange()">
+                </div>
+              </div>
+
+              <!-- Learning Resources -->
+              <div class="learning-resources-section">
+                <h3 class="subsection-title">Do you have access to Learning Resources? *</h3>
+                
+                <div class="checkbox-group">
+                  <label class="checkbox-label">
+                    <input type="checkbox" [(ngModel)]="programmeDetails.hasComputer" (ngModelChange)="onFormChange()">
+                    <span class="checkbox-text">Computer</span>
+                  </label>
+                  
+                  <label class="checkbox-label">
+                    <input type="checkbox" [(ngModel)]="programmeDetails.hasInternet" (ngModelChange)="onFormChange()">
+                    <span class="checkbox-text">Internet</span>
+                  </label>
+                  
+                  <label class="checkbox-label">
+                    <input type="checkbox" [(ngModel)]="programmeDetails.hasLibrary" (ngModelChange)="onFormChange()">
+                    <span class="checkbox-text">Library</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Course Requirements -->
+              <div class="course-requirements-section">
+                <h3 class="subsection-title">Course Requirements</h3>
+                <ul class="requirements-list">
+                  <li>Access to computer and internet for online learning</li>
+                  <li>Commitment to attend all scheduled sessions</li>
+                  <li>Valid identification document</li>
+                </ul>
               </div>
             </div>
           </div>
