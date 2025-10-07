@@ -423,72 +423,296 @@
   }
 }
 
-// Responsive Design
-@media (max-width: 1200px) {
+// ========================================
+// RESPONSIVE DESIGN
+// ========================================
+
+// Large Laptops (1440px and above)
+@media (min-width: 1440px) {
   .main-container {
-    padding: 0 24px;
+    padding: 0 64px;
+    max-width: 1600px;
+    margin: 0 auto;
   }
   
   .nav-bar {
-    padding: 0 24px;
+    padding: 0 64px;
   }
   
   .content-wrapper {
-    width: 100%;
-  }
-  
-  .sidebar {
-    width: 250px;
+    max-width: 1200px;
   }
 }
 
-@media (max-width: 768px) {
+// Standard Laptops (1200px - 1439px)
+@media (max-width: 1439px) and (min-width: 1200px) {
   .main-container {
-    flex-direction: column;
-    gap: 16px;
-    padding: 0 16px;
+    padding: 0 32px;
   }
   
   .nav-bar {
-    padding: 0 16px;
+    padding: 0 32px;
+  }
+  
+  .content-wrapper {
+    max-width: 100%;
+  }
+  
+  .sidebar {
+    width: 240px;
+    
+    .sidebar-content {
+      .sidebar-btn {
+        width: 240px;
+      }
+    }
+  }
+  
+  .progress-section {
+    .progress-indicators {
+      .progress-step {
+        .step-line {
+          width: 200px;
+        }
+      }
+    }
+  }
+}
+
+// Small Laptops (1024px - 1199px)
+@media (max-width: 1199px) and (min-width: 1024px) {
+  .main-container {
+    padding: 0 24px;
+    gap: 20px;
+  }
+  
+  .nav-bar {
+    padding: 0 24px;
+    height: 60px;
     
     .academy-logo {
-      width: 140px;
-      height: auto;
+      width: 160px;
+      height: 44px;
+    }
+    
+    .nav-actions {
+      gap: 20px;
     }
   }
   
   .sidebar {
-    width: 100%;
-    height: auto;
+    width: 220px;
     
     .sidebar-content {
-      flex-direction: row;
-      gap: 8px;
+      padding: 24px 0;
       
       .sidebar-btn {
-        flex: 1;
-        min-width: 0;
+        width: 220px;
+        height: 36px;
+        padding: 6px 16px;
         
         .sidebar-btn-text {
-          font-size: 14px;
+          font-size: 15px;
         }
       }
     }
   }
   
   .main-content {
-    margin-top: 32px;
+    margin-top: 100px;
+    
+    .content-wrapper {
+      max-width: 100%;
+    }
+  }
+  
+  .content-header {
+    margin-bottom: 32px;
+    
+    .header-text {
+      .main-title {
+        font-size: 30px;
+        line-height: 36px;
+      }
+      
+      .main-subtitle {
+        font-size: 14px;
+      }
+    }
+  }
+  
+  .progress-section {
+    margin-bottom: 32px;
+    
+    .progress-indicators {
+      .progress-step {
+        .step-line {
+          width: 160px;
+        }
+      }
+    }
+  }
+  
+  .form-card {
+    padding: 28px;
+    border-radius: 20px;
+  }
+  
+  .confirmed-info-container {
+    padding: 20px;
+    
+    .info-grid {
+      gap: 12px 12px;
+      
+      .info-display {
+        .info-label {
+          font-size: 10px;
+        }
+        
+        .info-value {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+  
+  .additional-section {
+    .form-row {
+      gap: 12px;
+      
+      .form-group {
+        .form-input, .form-select {
+          height: 38px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
+
+// Tablets (768px - 1023px)
+@media (max-width: 1023px) and (min-width: 768px) {
+  .main-container {
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+    height: auto;
+    min-height: calc(100vh - 60px);
+  }
+  
+  .nav-bar {
+    padding: 0 20px;
+    height: 60px;
+    
+    .academy-logo {
+      width: 140px;
+      height: 38px;
+    }
+    
+    .nav-actions {
+      gap: 16px;
+      
+      .nav-btn {
+        &.search-btn, &.grid-btn {
+          width: 20px;
+          height: 20px;
+        }
+      }
+      
+      .profile-btn {
+        .profile-image {
+          width: 36px;
+          height: 36px;
+        }
+      }
+    }
+  }
+  
+  .sidebar {
+    width: 100%;
+    height: auto;
+    order: 2;
+    
+    .sidebar-content {
+      flex-direction: row;
+      gap: 12px;
+      padding: 16px 0;
+      justify-content: center;
+      
+      .sidebar-btn {
+        flex: 1;
+        max-width: 200px;
+        height: 44px;
+        border-radius: 12px;
+        padding: 8px 12px;
+        
+        .sidebar-btn-text {
+          font-size: 14px;
+          text-align: center;
+        }
+      }
+    }
+  }
+  
+  .main-content {
+    order: 1;
+    margin-top: 20px;
+    
+    .content-wrapper {
+      width: 100%;
+      max-width: 100%;
+    }
+  }
+  
+  .content-header {
+    margin-bottom: 24px;
+    
+    .header-text {
+      .main-title {
+        font-size: 28px;
+        line-height: 32px;
+      }
+      
+      .main-subtitle {
+        font-size: 14px;
+      }
+    }
+  }
+  
+  .progress-section {
+    margin-bottom: 24px;
+    
+    .progress-indicators {
+      .progress-step {
+        .step-line {
+          width: 80px;
+        }
+      }
+    }
   }
   
   .form-card {
     padding: 24px;
+    border-radius: 16px;
   }
   
   .confirmed-info-container {
+    padding: 18px;
+    border-radius: 10px;
+    
     .info-grid {
       grid-template-columns: 1fr;
-      gap: 12px;
+      gap: 10px;
+      
+      .info-display {
+        .info-label {
+          font-size: 11px;
+        }
+        
+        .info-value {
+          font-size: 14px;
+        }
+      }
     }
   }
   
@@ -496,6 +720,92 @@
     .form-row {
       flex-direction: column;
       gap: 16px;
+      
+      .form-group {
+        .form-input, .form-select {
+          height: 42px;
+          font-size: 15px;
+        }
+      }
+    }
+  }
+  
+  .form-actions {
+    margin-top: 24px;
+    
+    .next-btn {
+      width: 100%;
+      padding: 12px 24px;
+      
+      .btn-text {
+        font-size: 16px;
+      }
+    }
+  }
+}
+
+// Small Tablets (600px - 767px)
+@media (max-width: 767px) and (min-width: 600px) {
+  .main-container {
+    padding: 0 16px;
+    gap: 16px;
+  }
+  
+  .nav-bar {
+    padding: 0 16px;
+    height: 56px;
+    
+    .academy-logo {
+      width: 120px;
+      height: 32px;
+    }
+    
+    .nav-actions {
+      gap: 12px;
+      
+      .nav-btn {
+        &.search-btn, &.grid-btn {
+          width: 18px;
+          height: 18px;
+        }
+      }
+      
+      .profile-btn {
+        .profile-image {
+          width: 32px;
+          height: 32px;
+        }
+      }
+    }
+  }
+  
+  .sidebar {
+    .sidebar-content {
+      padding: 12px 0;
+      gap: 8px;
+      
+      .sidebar-btn {
+        height: 40px;
+        border-radius: 10px;
+        padding: 6px 8px;
+        
+        .sidebar-btn-text {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+  
+  .content-header {
+    .header-text {
+      .main-title {
+        font-size: 24px;
+        line-height: 28px;
+      }
+      
+      .main-subtitle {
+        font-size: 13px;
+      }
     }
   }
   
@@ -507,5 +817,245 @@
         }
       }
     }
+  }
+  
+  .form-card {
+    padding: 20px;
+  }
+  
+  .confirmed-info-container {
+    padding: 16px;
+    
+    .confirmed-header {
+      margin-bottom: 12px;
+      
+      .confirmed-title {
+        font-size: 14px;
+      }
+    }
+  }
+}
+
+// Mobile Devices (below 600px)
+@media (max-width: 599px) {
+  .main-container {
+    padding: 0 12px;
+    gap: 12px;
+  }
+  
+  .nav-bar {
+    padding: 0 12px;
+    height: 52px;
+    
+    .academy-logo {
+      width: 100px;
+      height: 28px;
+    }
+    
+    .nav-actions {
+      gap: 8px;
+      
+      .nav-btn {
+        &.search-btn, &.grid-btn {
+          width: 16px;
+          height: 16px;
+        }
+      }
+      
+      .profile-btn {
+        .profile-image {
+          width: 28px;
+          height: 28px;
+        }
+      }
+    }
+  }
+  
+  .sidebar {
+    .sidebar-content {
+      padding: 10px 0;
+      gap: 6px;
+      
+      .sidebar-btn {
+        height: 36px;
+        border-radius: 8px;
+        padding: 4px 6px;
+        
+        .sidebar-btn-icon {
+          width: 20px;
+          height: 20px;
+          
+          img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+        
+        .sidebar-btn-text {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  
+  .main-content {
+    margin-top: 16px;
+  }
+  
+  .content-header {
+    margin-bottom: 20px;
+    
+    .header-text {
+      .main-title {
+        font-size: 22px;
+        line-height: 26px;
+      }
+      
+      .main-subtitle {
+        font-size: 12px;
+      }
+    }
+  }
+  
+  .progress-section {
+    margin-bottom: 20px;
+    
+    .step-text {
+      font-size: 13px;
+    }
+    
+    .progress-indicators {
+      .progress-step {
+        .step-line {
+          width: 40px;
+          height: 6px;
+        }
+      }
+    }
+  }
+  
+  .form-card {
+    padding: 16px;
+    border-radius: 12px;
+  }
+  
+  .confirmed-info-container {
+    padding: 14px;
+    border-radius: 8px;
+    
+    .confirmed-header {
+      margin-bottom: 10px;
+      
+      .confirmed-title {
+        font-size: 13px;
+      }
+    }
+    
+    .info-grid {
+      gap: 8px;
+      
+      .info-display {
+        .info-label {
+          font-size: 10px;
+        }
+        
+        .info-value {
+          font-size: 13px;
+        }
+      }
+    }
+  }
+  
+  .additional-section {
+    .additional-title {
+      font-size: 15px;
+      margin-bottom: 12px;
+    }
+    
+    .form-row {
+      gap: 12px;
+      
+      .form-group {
+        gap: 6px;
+        
+        .form-label {
+          font-size: 12px;
+        }
+        
+        .form-input, .form-select {
+          height: 40px;
+          font-size: 14px;
+          padding: 6px 10px;
+        }
+      }
+    }
+  }
+  
+  .form-actions {
+    margin-top: 20px;
+    
+    .next-btn {
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 12px;
+      
+      .btn-text {
+        font-size: 15px;
+      }
+      
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+}
+
+// Ultra-wide screens (above 1920px)
+@media (min-width: 1920px) {
+  .main-container {
+    max-width: 1800px;
+    padding: 0 80px;
+  }
+  
+  .nav-bar {
+    padding: 0 80px;
+  }
+  
+  .content-wrapper {
+    max-width: 1400px;
+  }
+  
+  .sidebar {
+    width: 300px;
+    
+    .sidebar-content {
+      .sidebar-btn {
+        width: 300px;
+      }
+    }
+  }
+}
+
+// Print styles
+@media print {
+  .nav-bar,
+  .sidebar,
+  .form-actions {
+    display: none;
+  }
+  
+  .main-container {
+    flex-direction: column;
+    padding: 0;
+  }
+  
+  .main-content {
+    margin-top: 0;
+  }
+  
+  .form-card {
+    border: 1px solid #ccc;
+    box-shadow: none;
   }
 }
