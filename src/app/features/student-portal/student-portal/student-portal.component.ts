@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserInformation, AdditionalInformation, ViewType } from '../../../core/models/user-info.model';
+import { UserInformation, AdditionalInformation, EducationalBackground, WorkBackground, ViewType } from '../../../core/models/user-info.model';
 
 @Component({
   selector: 'app-student-portal',
@@ -15,6 +15,7 @@ export class StudentPortalComponent implements OnInit {
   private router = inject(Router);
 
   currentView: ViewType = 'course-application';
+  currentStep: number = 2; // Start at step 2 for educational background
 
   userInfo: UserInformation = {
     fullName: 'Thandi Dlovu',
@@ -31,6 +32,20 @@ export class StudentPortalComponent implements OnInit {
     middleName: '',
     maritalStatus: '',
     homeTelephone: ''
+  };
+
+  educationalBackground: EducationalBackground = {
+    lastSchoolAttended: '',
+    highestGrade: '',
+    dateGradeObtained: '',
+    highestQualification: '',
+    qualificationName: '',
+    yearObtained: '',
+    institutionAttended: ''
+  };
+
+  workBackground: WorkBackground = {
+    socioEconomicStatus: ''
   };
 
   ngOnInit(): void {
@@ -62,30 +77,51 @@ export class StudentPortalComponent implements OnInit {
   }
 
   nextStep(): void {
-    // Validate required fields
-    if (!this.additionalInfo.maritalStatus) {
-      alert('Please select your marital status before proceeding.');
+    // Validate required fields based on current step
+    if (!this.isFormValid()) {
+      alert('Please fill in all required fields before proceeding.');
       return;
     }
 
-    // Navigate to next step of the application
-    console.log('Proceeding to next step with data:', {
-      userInfo: this.userInfo,
-      additionalInfo: this.additionalInfo
-    });
+    // Save current step data
+    this.saveDraft();
 
-    // In a real implementation, this would:
-    // 1. Save the current step data
-    // 2. Navigate to the next step component
-    // 3. Update the progress indicator
-    
-    // For now, we'll just log the action
-    alert('Moving to Step 2: Course Selection');
+    // Move to next step
+    if (this.currentStep < 4) {
+      this.currentStep++;
+      console.log(`Moving to Step ${this.currentStep}`);
+    } else {
+      console.log('Application completed!');
+      alert('Application completed successfully!');
+    }
   }
 
-  // Method to handle form validation
+  previousStep(): void {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+      console.log(`Moving to Step ${this.currentStep}`);
+    }
+  }
+
+  // Method to handle form validation based on current step
   isFormValid(): boolean {
-    return !!this.additionalInfo.maritalStatus;
+    switch (this.currentStep) {
+      case 1:
+        return !!this.additionalInfo.maritalStatus;
+      case 2:
+        return !!(
+          this.educationalBackground.lastSchoolAttended &&
+          this.educationalBackground.highestGrade &&
+          this.educationalBackground.dateGradeObtained &&
+          this.educationalBackground.highestQualification &&
+          this.educationalBackground.qualificationName &&
+          this.educationalBackground.yearObtained &&
+          this.educationalBackground.institutionAttended &&
+          this.workBackground.socioEconomicStatus
+        );
+      default:
+        return true;
+    }
   }
 
   // Method to handle saving draft
@@ -93,6 +129,9 @@ export class StudentPortalComponent implements OnInit {
     const draftData = {
       userInfo: this.userInfo,
       additionalInfo: this.additionalInfo,
+      educationalBackground: this.educationalBackground,
+      workBackground: this.workBackground,
+      currentStep: this.currentStep,
       timestamp: new Date().toISOString()
     };
 
@@ -108,6 +147,9 @@ export class StudentPortalComponent implements OnInit {
       try {
         const parsed = JSON.parse(draftData);
         this.additionalInfo = parsed.additionalInfo || this.additionalInfo;
+        this.educationalBackground = parsed.educationalBackground || this.educationalBackground;
+        this.workBackground = parsed.workBackground || this.workBackground;
+        this.currentStep = parsed.currentStep || this.currentStep;
         console.log('Draft loaded:', parsed);
       } catch (error) {
         console.error('Error loading draft:', error);

@@ -15,9 +15,25 @@ export interface AdditionalInformation {
   homeTelephone: string;
 }
 
+export interface EducationalBackground {
+  lastSchoolAttended: string;
+  highestGrade: string;
+  dateGradeObtained: string;
+  highestQualification: string;
+  qualificationName: string;
+  yearObtained: string;
+  institutionAttended: string;
+}
+
+export interface WorkBackground {
+  socioEconomicStatus: string;
+}
+
 export interface CourseApplicationData {
   userInfo: UserInformation;
   additionalInfo: AdditionalInformation;
+  educationalBackground?: EducationalBackground;
+  workBackground?: WorkBackground;
   currentStep: number;
   selectedCourse?: string;
   uploadedDocuments?: string[];

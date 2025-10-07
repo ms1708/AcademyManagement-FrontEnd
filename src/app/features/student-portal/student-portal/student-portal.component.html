@@ -88,99 +88,102 @@
               <div class="step-line"></div>
             </div>
           </div>
-          <div class="step-text">Step 1 of 4</div>
+          <div class="step-text">Step {{ currentStep }} of 4</div>
         </div>
 
         <!-- Form Card -->
         <div class="form-card">
           <div class="form-content">
-            <!-- Review Information Section -->
-            <div class="review-section">
-              <div class="section-header">
-                <h2 class="section-title">Review Your Information</h2>
-                <p class="section-description">We've pre-filled your information from your profile. Please review and add any missing details.</p>
-              </div>
+            <!-- Educational and Work Background Section -->
+            <div class="educational-work-section">
+              <h2 class="section-title">Educational and Work Background</h2>
 
-              <!-- Confirmed Information -->
-              <div class="confirmed-info-container">
-                <div class="confirmed-header">
-                  <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M10.3343 18.9176C14.9367 18.9176 18.6676 15.1867 18.6676 10.5843C18.6676 5.98194 14.9367 2.25098 10.3343 2.25098C5.73194 2.25098 2.00098 5.98194 2.00098 10.5843C2.00098 15.1867 5.73194 18.9176 10.3343 18.9176Z" stroke="#08782D" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M7.83398 10.5837L9.50065 12.2503L12.834 8.91699" stroke="#08782D" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
-                  </svg>
-                  <span class="confirmed-title">Confirmed Information from Your Profile</span>
+              <!-- Educational Background -->
+              <div class="educational-section">
+                <h3 class="subsection-title">Educational Background</h3>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Last School Attended *</label>
+                    <input type="text" class="form-input" placeholder="Enter school name" [(ngModel)]="educationalBackground.lastSchoolAttended" (ngModelChange)="onFormChange()">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Highest Grade *</label>
+                    <input type="text" class="form-input" placeholder="e.g., Grade 12" [(ngModel)]="educationalBackground.highestGrade" (ngModelChange)="onFormChange()">
+                  </div>
                 </div>
 
-                <div class="info-grid">
-                  <div class="info-display">
-                    <div class="info-label">Full Name</div>
-                    <div class="info-value">{{ userInfo.fullName }}</div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Date Grade Obtained *</label>
+                    <input type="date" class="form-input" [(ngModel)]="educationalBackground.dateGradeObtained" (ngModelChange)="onFormChange()">
                   </div>
-                  <div class="info-display">
-                    <div class="info-label">Email</div>
-                    <div class="info-value">{{ userInfo.email }}</div>
-                  </div>
-                  <div class="info-display">
-                    <div class="info-label">Contact Number</div>
-                    <div class="info-value">{{ userInfo.contactNumber }}</div>
-                  </div>
-                  <div class="info-display">
-                    <div class="info-label">Date of Birth</div>
-                    <div class="info-value">{{ userInfo.dateOfBirth }}</div>
-                  </div>
-                  <div class="info-display">
-                    <div class="info-label">ID Number</div>
-                    <div class="info-value">{{ userInfo.idNumber }}</div>
-                  </div>
-                  <div class="info-display">
-                    <div class="info-label">Gender</div>
-                    <div class="info-value">{{ userInfo.gender }}</div>
-                  </div>
-                  <div class="info-display">
-                    <div class="info-label">Nationality</div>
-                    <div class="info-value">{{ userInfo.nationality }}</div>
-                  </div>
-                  <div class="info-display full-width">
-                    <div class="info-label">Home Address</div>
-                    <div class="info-value">{{ userInfo.homeAddress }}</div>
+                  <div class="form-group">
+                    <label class="form-label">Highest Qualification *</label>
+                    <select class="form-select" [(ngModel)]="educationalBackground.highestQualification" (ngModelChange)="onFormChange()">
+                      <option value="">Select Qualification</option>
+                      <option value="matric">Matric (Grade 12)</option>
+                      <option value="certificate">Certificate</option>
+                      <option value="diploma">Diploma</option>
+                      <option value="degree">Degree</option>
+                      <option value="honours">Honours</option>
+                      <option value="masters">Masters</option>
+                      <option value="phd">PhD</option>
+                    </select>
                   </div>
                 </div>
-              </div>
-            </div>
 
-            <!-- Additional Information Section -->
-            <div class="additional-section">
-              <h3 class="additional-title">Additional Information</h3>
-              
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Middle Name</label>
-                  <input type="text" class="form-input" placeholder="Optional" [(ngModel)]="additionalInfo.middleName">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Qualification Name *</label>
+                    <input type="text" class="form-input" placeholder="e.g., National Senior Certificate" [(ngModel)]="educationalBackground.qualificationName" (ngModelChange)="onFormChange()">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Year Obtained *</label>
+                    <input type="number" class="form-input" placeholder="e.g., 2020" [(ngModel)]="educationalBackground.yearObtained" (ngModelChange)="onFormChange()">
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label class="form-label">Marital Status *</label>
-                  <select class="form-select" [(ngModel)]="additionalInfo.maritalStatus">
-                    <option value="">Select Status</option>
-                    <option value="single">Single</option>
-                    <option value="married">Married</option>
-                    <option value="divorced">Divorced</option>
-                    <option value="widowed">Widowed</option>
-                  </select>
+
+                <div class="form-row">
+                  <div class="form-group full-width">
+                    <label class="form-label">Institution Attended *</label>
+                    <input type="text" class="form-input" placeholder="Enter institution name" [(ngModel)]="educationalBackground.institutionAttended" (ngModelChange)="onFormChange()">
+                  </div>
                 </div>
               </div>
 
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Home Telephone</label>
-                  <input type="text" class="form-input" placeholder="Optional" [(ngModel)]="additionalInfo.homeTelephone">
+              <!-- Work Background -->
+              <div class="work-section">
+                <h3 class="subsection-title">Work Background</h3>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Socio-Economic Status *</label>
+                    <select class="form-select" [(ngModel)]="workBackground.socioEconomicStatus" (ngModelChange)="onFormChange()">
+                      <option value="">Select Status</option>
+                      <option value="employed">Employed</option>
+                      <option value="unemployed">Unemployed</option>
+                      <option value="student">Student</option>
+                      <option value="retired">Retired</option>
+                      <option value="self-employed">Self-Employed</option>
+                      <option value="freelancer">Freelancer</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Next Button -->
+        <!-- Form Actions -->
         <div class="form-actions">
+          <button class="prev-btn" (click)="previousStep()" [disabled]="currentStep === 1">
+            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M13.167 15.5L8.167 10.5L13.167 5.5" stroke="#7E2549" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="btn-text">Previous</span>
+          </button>
+          
           <button class="next-btn" (click)="nextStep()">
             <span class="btn-text">Next</span>
             <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
