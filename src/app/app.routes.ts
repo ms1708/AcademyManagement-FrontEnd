@@ -25,12 +25,12 @@ export const routes: Routes = [
         loadComponent: () => import('./features/auth/signup/signup.component').then(m => m.SignupComponent)
       },
       {
-        path: 'verify-email',
-        loadComponent: () => import('./features/auth/verify-email/verify-email.component').then(m => m.VerifyEmailComponent)
-      },
-      {
         path: 'forgot-password',
         loadComponent: () => import('./features/auth/forgot-password/forgot-password.component').then(m => m.ForgotPasswordComponent)
+      },
+      {
+        path: 'forgot-password-verify',
+        loadComponent: () => import('./features/auth/forgot-password-verify/forgot-password-verify.component').then(m => m.ForgotPasswordVerifyComponent)
       },
       {
         path: 'create-password',

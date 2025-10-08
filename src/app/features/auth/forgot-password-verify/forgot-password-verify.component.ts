@@ -4,18 +4,18 @@ import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 /**
- * Email Verification Component
- * Handles OTP verification for both email confirmation and password reset flows
+ * Forgot Password Verify Component
+ * Handles OTP verification for password reset flow
  * Features auto-focus, paste support, and keyboard navigation
  */
 @Component({
-  selector: 'app-verify-email',
+  selector: 'app-forgot-password-verify',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './verify-email.component.html',
-  styleUrls: ['./verify-email.component.scss']
+  templateUrl: './forgot-password-verify.component.html',
+  styleUrls: ['./forgot-password-verify.component.scss']
 })
-export class VerifyEmailComponent implements OnInit {
+export class ForgotPasswordVerifyComponent implements OnInit {
   // Reference to all OTP input fields for focus management
   @ViewChildren('digit1,digit2,digit3,digit4,digit5') digitInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
