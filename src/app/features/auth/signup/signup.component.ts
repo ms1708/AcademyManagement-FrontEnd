@@ -1,9 +1,18 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ErrorLoggingService } from '../../../core/services/error-logging.service';
+import { AuthenticationService } from '../../../core/services/signin.service';
+import { OnboardingDataService } from '../../onboarding/OnboardingDataService';
 
 /**
  * Sign-up component for user registration
@@ -12,40 +21,41 @@ import { ErrorLoggingService } from '../../../core/services/error-logging.servic
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  styleUrls: ['./signup.component.scss'],
 })
 export class SignupComponent {
   private fb = inject(FormBuilder);
   private authService = inject(AuthService);
+  private authenticationService = inject(AuthenticationService);
   private errorLoggingService = inject(ErrorLoggingService);
   private router = inject(Router);
+  private onboardingService = inject(OnboardingDataService);
 
   signupForm: FormGroup;
   isLoading = false;
   passwordRequirements = {
     length: false,
     noPersonalInfo: true,
-    hasNumberOrSymbol: false
+    hasNumberOrSymbol: false,
   };
   selectedCountryCode = '+27';
   countryFlag = '🇿🇦';
 
   constructor() {
-    this.signupForm = this.fb.group({
-      firstName: ['', [Validators.required, Validators.minLength(2)]],
-      lastName: ['', [Validators.required, Validators.minLength(2)]],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{9,10}$/)]],
-      password: ['', [Validators.required, this.passwordValidator.bind(this)]],
-      confirmPassword: ['', [Validators.required]],
-      acceptTerms: [false, [Validators.requiredTrue]]
-    }, { validators: this.passwordMatchValidator });
+    this.signupForm = this.fb.group(
+      {
+        firstName: ['', [Validators.required, Validators.minLength(2)]],
+        lastName: ['', [Validators.required, Validators.minLength(2)]],
+        email: ['', [Validators.required, Validators.email]],
+        phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{9,10}$/)]],
+        password: ['', [Validators.required, this.passwordValidator.bind(this)]],
+        confirmPassword: ['', [Validators.required]],
+        // acceptTerms: [false, [Validators.requiredTrue]],
+      },
+      { validators: this.passwordMatchValidator }
+    );
 
     // Watch password changes for requirements validation
     this.signupForm.get('password')?.valueChanges.subscribe(password => {
@@ -108,7 +118,7 @@ export class SignupComponent {
       this.passwordRequirements = {
         length: false,
         noPersonalInfo: true,
-        hasNumberOrSymbol: false
+        hasNumberOrSymbol: false,
       };
       return;
     }
@@ -123,9 +133,10 @@ export class SignupComponent {
     const passwordLower = password.toLowerCase();
 
     this.passwordRequirements.noPersonalInfo =
-      !firstName || !passwordLower.includes(firstName) &&
-      !lastName || !passwordLower.includes(lastName) &&
-      !email || !passwordLower.includes(email.split('@')[0]);
+      !firstName ||
+      (!passwordLower.includes(firstName) && !lastName) ||
+      (!passwordLower.includes(lastName) && !email) ||
+      !passwordLower.includes(email.split('@')[0]);
 
     // Check for number or symbol
     this.passwordRequirements.hasNumberOrSymbol = /[0-9!@#$%^&*(),.?":{}|<>]/.test(password);
@@ -136,7 +147,7 @@ export class SignupComponent {
    */
   getPasswordStrength(): string {
     const requirementsMet = Object.values(this.passwordRequirements).filter(Boolean).length;
-    
+
     if (requirementsMet === 0) return 'Very Weak';
     if (requirementsMet === 1) return 'Weak';
     if (requirementsMet === 2) return 'Fair';
@@ -147,27 +158,40 @@ export class SignupComponent {
    * Handles form submission
    */
   onSubmit(): void {
+    console.log(this.signupForm.status); // 'VALID' or 'INVALID'
+    console.log(this.signupForm.errors); // any form-level errors
     if (this.signupForm.valid) {
       this.isLoading = true;
       const formData = {
         firstName: this.signupForm.value.firstName,
         lastName: this.signupForm.value.lastName,
         email: this.signupForm.value.email,
-        password: this.signupForm.value.password
+        password: this.signupForm.value.password,
+        phoneNumber: this.signupForm.value.phoneNumber,
       };
 
-      this.authService.register(formData).subscribe({
-        next: () => {
+      this.authenticationService.signup(formData).subscribe({
+        next: response => {
           this.isLoading = false;
-          this.errorLoggingService.logError('info', `User registered successfully: ${formData.email}`);
+          this.errorLoggingService.logError(
+            'info',
+            `User registered successfully: ${formData.email}`
+          );
+          this.onboardingService.setUserData(response);
           // Redirect to email verification page
-          this.router.navigate(['/auth/verify-email']);
+          // this.router.navigate(['/auth/verify-email']);
+          this.router.navigate(['/auth/verify-email'], {
+            state: {
+              email: response.email,
+              userid: response.id,
+            },
+          });
         },
-        error: (error) => {
+        error: error => {
           this.isLoading = false;
           this.errorLoggingService.logErrorWithStack('Registration failed', error as Error);
           console.error('Registration error:', error);
-        }
+        },
       });
     } else {
       this.markFormGroupTouched();
@@ -221,7 +245,7 @@ export class SignupComponent {
       email: 'Email',
       phoneNumber: 'Phone Number',
       password: 'Password',
-      confirmPassword: 'Confirm Password'
+      confirmPassword: 'Confirm Password',
     };
     return labels[fieldName] || fieldName;
   }

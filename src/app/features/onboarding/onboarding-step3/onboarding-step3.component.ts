@@ -3,6 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ErrorLoggingService } from '../../../core/services/error-logging.service';
+import { OnboardingDataService } from '../OnboardingDataService';
+import { AuthenticationService } from '../../../core/services/signin.service';
 
 /**
  * Onboarding Step 3 Component - Next of Kin Particulars
@@ -12,13 +14,9 @@ import { ErrorLoggingService } from '../../../core/services/error-logging.servic
 @Component({
   selector: 'app-onboarding-step3',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './onboarding-step3.component.html',
-  styleUrls: ['./onboarding-step3.component.scss']
+  styleUrls: ['./onboarding-step3.component.scss'],
 })
 export class OnboardingStep3Component {
   nextOfKinForm: FormGroup;
@@ -31,6 +29,8 @@ export class OnboardingStep3Component {
   private fb = inject(FormBuilder);
   private errorLoggingService = inject(ErrorLoggingService);
   private router = inject(Router);
+  private onboardingService = inject(OnboardingDataService);
+  private authenticationService = inject(AuthenticationService);
 
   constructor() {
     this.nextOfKinForm = this.fb.group({
@@ -40,7 +40,7 @@ export class OnboardingStep3Component {
       relationship: ['', [Validators.required]],
       contactNumber: ['', [Validators.required]],
       emailAddress: ['', [Validators.required, Validators.email]],
-      residentialAddress: ['', [Validators.required]]
+      residentialAddress: ['', [Validators.required]],
     });
   }
 
@@ -51,14 +51,30 @@ export class OnboardingStep3Component {
     if (this.nextOfKinForm.valid) {
       this.isLoading = true;
       const formData = this.nextOfKinForm.value;
-
+      const finalData = this.onboardingService.getFinalData(formData);
+      console.log(finalData);
+      this.authenticationService
+        .submitStudentDetails(
+          finalData.student,
+          finalData.studentAdditionalDetails,
+          finalData.studentNextOfKin
+        )
+        .subscribe({
+          next: res => {
+            console.log('Enrollment submitted successfully', res);
+            this.router.navigate(['/onboarding/success']);
+          },
+          error: err => {
+            console.error('Error submitting enrollment', err);
+          },
+        });
       // Mock submission - in real app, complete onboarding and redirect to dashboard
       setTimeout(() => {
         this.isLoading = false;
         this.errorLoggingService.logError('info', `Onboarding completed successfully for user`);
-        
-        // Navigate to student portal after onboarding completion
-        this.router.navigate(['/student-portal']);
+
+        // Navigate to dashboard or success page
+        this.router.navigate(['/dashboard']);
       }, 2000);
     } else {
       this.markFormGroupTouched();
@@ -142,4 +158,3 @@ export class OnboardingStep3Component {
     return Math.round((this.getCurrentStep() / this.getTotalSteps()) * 100);
   }
 }
-

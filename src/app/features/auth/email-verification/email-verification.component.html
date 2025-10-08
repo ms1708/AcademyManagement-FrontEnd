@@ -7,7 +7,8 @@
       <div class="welcome-content">
         <h1 class="welcome-title">Verify Your Email</h1>
         <p class="welcome-description">
-          We've sent a 6-digit verification code to your email address. Please enter it below to continue your registration.
+          We've sent a 6-digit verification code to your email address. Please enter it below to
+          continue your registration.
         </p>
       </div>
     </div>
@@ -16,11 +17,15 @@
     <div class="form-section">
       <div class="form-container">
         <!-- Logo -->
-        <img class="academy-logo" src="https://api.builder.io/api/v1/image/assets/TEMP/d765edc4a278dc4383d842745293ea933870fd0c?width=352" alt="App Logo" />
+        <img
+          class="academy-logo"
+          src="https://api.builder.io/api/v1/image/assets/TEMP/d765edc4a278dc4383d842745293ea933870fd0c?width=352"
+          alt="App Logo"
+        />
 
         <!-- Main Title -->
         <h2 class="form-title">Enter Verification Code</h2>
-        
+
         <!-- Instruction Text -->
         <p class="instruction-text">
           We sent a code to <span class="email-highlight">{{ userEmail }}</span>
@@ -103,7 +108,9 @@
               />
             </div>
           </div>
-
+          <div *ngIf="errorMessage" class="error-message">
+            {{ errorMessage }}
+          </div>
           <!-- Resend Link -->
           <div class="resend-container">
             <span class="resend-text">Didn't receive the code? </span>
@@ -111,26 +118,21 @@
               type="button"
               class="resend-link"
               (click)="onResendCode()"
-              [disabled]="resendCooldown > 0">
+              [disabled]="resendCooldown > 0"
+            >
               <span *ngIf="resendCooldown === 0">Resend</span>
               <span *ngIf="resendCooldown > 0">Resend ({{ resendCooldown }}s)</span>
             </button>
           </div>
 
           <!-- Verify Email Button -->
-          <button
-            type="submit"
-            class="verify-button"
-            [disabled]="!isFormValid() || isLoading">
+          <button type="submit" class="verify-button" [disabled]="!isFormValid() || isLoading">
             <span *ngIf="!isLoading">Verify Email</span>
             <span *ngIf="isLoading">Verifying...</span>
           </button>
 
           <!-- Back to Sign Up Button -->
-          <button
-            type="button"
-            class="back-button"
-            (click)="onBackToSignUp()">
+          <button type="button" class="back-button" (click)="onBackToSignUp()">
             Back to Sign Up
           </button>
         </form>
@@ -138,4 +140,3 @@
     </div>
   </div>
 </div>
-

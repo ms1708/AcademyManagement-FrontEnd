@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ErrorLoggingService } from '../../../core/services/error-logging.service';
+import { ActivatedRoute } from '@angular/router';
+import { AuthenticationService } from '../../../core/services/signin.service';
+import { OnboardingDataService } from '../../onboarding/OnboardingDataService';
 
 /**
  * Email verification component for verifying user email with 6-digit code
@@ -12,13 +15,9 @@ import { ErrorLoggingService } from '../../../core/services/error-logging.servic
 @Component({
   selector: 'app-email-verification',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './email-verification.component.html',
-  styleUrls: ['./email-verification.component.scss']
+  styleUrls: ['./email-verification.component.scss'],
 })
 export class EmailVerificationComponent {
   verificationForm: FormGroup;
@@ -27,12 +26,16 @@ export class EmailVerificationComponent {
   resendTimer: any;
 
   // Mock email for demonstration - in real app, this would come from route params or service
-  userEmail = 'Thandi@Dlovu.com';
-
+  userEmail: string = '';
+  userId = '';
+  errorMessage = '';
   private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
+  private authenticationService = inject(AuthenticationService);
+
   private errorLoggingService = inject(ErrorLoggingService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
+  private onboardingService = inject(OnboardingDataService);
 
   constructor() {
     this.verificationForm = this.fb.group({
@@ -41,8 +44,15 @@ export class EmailVerificationComponent {
       code3: ['', [Validators.required, Validators.pattern(/^\d$/)]],
       code4: ['', [Validators.required, Validators.pattern(/^\d$/)]],
       code5: ['', [Validators.required, Validators.pattern(/^\d$/)]],
-      code6: ['', [Validators.required, Validators.pattern(/^\d$/)]]
+      code6: ['', [Validators.required, Validators.pattern(/^\d$/)]],
     });
+    const nav = this.router.getCurrentNavigation();
+    this.userEmail = nav?.extras.state?.['email'] || '';
+    this.userId = nav?.extras.state?.['userid'] || '';
+    this.onboardingService.setUserId(this.userId);
+    if (!this.userEmail || !this.userId) {
+      this.router.navigate(['/auth/signup']);
+    }
   }
 
   /**
@@ -51,15 +61,38 @@ export class EmailVerificationComponent {
   onSubmit(): void {
     if (this.verificationForm.valid) {
       this.isLoading = true;
-      const verificationCode = this.getVerificationCode();
-
+      const otptext = this.getVerificationCode();
+      const payload = {
+        userid: this.userId, // set this when navigating from signup
+        username: this.userEmail,
+        otptext,
+      };
       // Mock verification - in real app, call auth service
-      setTimeout(() => {
-        this.isLoading = false;
-        this.errorLoggingService.logError('info', `Email verification attempted for: ${this.userEmail}`);
-        // Redirect to onboarding step 1
-        this.router.navigate(['/onboarding/step1']);
-      }, 2000);
+      // setTimeout(() => {
+      //   this.isLoading = false;
+      //   this.errorLoggingService.logError(
+      //     'info',
+      //     `Email verification attempted for: ${this.userEmail}`
+      //   );
+      //   // Redirect to onboarding step 1
+      //   this.router.navigate(['/onboarding/step1']);
+      // }, 2000);
+      this.authenticationService.verifyOtp(payload).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.errorMessage = ''; // clear any previous error
+
+          this.errorLoggingService.logError('info', `OTP verified for: ${this.userEmail}`);
+          // Navigate to dashboard or next step
+          this.router.navigate(['/onboarding/step1']);
+        },
+        error: error => {
+          this.isLoading = false;
+          this.errorMessage = 'OTP is not matched. Please try again.';
+          this.errorLoggingService.logErrorWithStack('OTP verification failed', error as Error);
+          console.error('OTP verification error:', error);
+        },
+      });
     } else {
       this.markFormGroupTouched();
     }
@@ -68,16 +101,20 @@ export class EmailVerificationComponent {
   /**
    * Handles resend code functionality
    */
+
   onResendCode(): void {
     if (this.resendCooldown > 0) return;
 
-    this.resendCooldown = 60; // 60 seconds cooldown
+    this.resendCooldown = 60;
     this.startResendTimer();
-    
-    this.errorLoggingService.logError('info', `Resend code requested for: ${this.userEmail}`);
-    
-    // Mock resend - in real app, call auth service
-    console.log('Resending verification code...');
+    this.authenticationService.resendOtp(this.userEmail).subscribe({
+      next: () => {
+        console.log(`OTP resent to ${this.userEmail}`);
+      },
+      error: err => {
+        console.error('Failed to resend OTP', err);
+      },
+    });
   }
 
   /**
@@ -94,7 +131,7 @@ export class EmailVerificationComponent {
    */
   onInputChange(event: Event, nextFieldIndex?: number): void {
     const input = event.target as HTMLInputElement;
-    
+
     // Only allow single digit
     if (input.value.length > 1) {
       input.value = input.value.slice(-1);
@@ -120,7 +157,7 @@ export class EmailVerificationComponent {
    */
   onBackspace(event: KeyboardEvent, currentFieldIndex: number): void {
     const input = event.target as HTMLInputElement;
-    
+
     if (event.key === 'Backspace' && !input.value && currentFieldIndex > 1) {
       const prevField = document.getElementById(`code${currentFieldIndex - 1}`);
       if (prevField) {

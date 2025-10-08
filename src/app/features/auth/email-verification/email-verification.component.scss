@@ -89,7 +89,14 @@ $transparent-white: rgba(255, 255, 255, 0.90);
   width: 100%;
   white-space: nowrap;
 }
-
+.error-message {
+    color: #d32f2f;
+    background-color: #fdecea;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    font-weight: 500;
+  }
 .welcome-description {
   width: 100%;
   color: $transparent-white;
