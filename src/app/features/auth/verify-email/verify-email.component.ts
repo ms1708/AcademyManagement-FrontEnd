@@ -3,6 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
+/**
+ * Email Verification Component
+ * Handles OTP verification for both email confirmation and password reset flows
+ * Features auto-focus, paste support, and keyboard navigation
+ */
 @Component({
   selector: 'app-verify-email',
   standalone: true,
@@ -11,12 +16,14 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./verify-email.component.scss']
 })
 export class VerifyEmailComponent implements OnInit {
+  // Reference to all OTP input fields for focus management
   @ViewChildren('digit1,digit2,digit3,digit4,digit5') digitInputs!: QueryList<ElementRef<HTMLInputElement>>;
 
+  // Store individual digits of the 5-digit verification code
   verificationCode: string[] = ['', '', '', '', ''];
   isLoading = false;
   email: string | null = null;
-  verificationType: string | null = null;
+  verificationType: string | null = null; // 'email' or 'reset'
 
   constructor(
     private router: Router,
@@ -24,13 +31,13 @@ export class VerifyEmailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Get query parameters
+    // Read email and verification type from URL query params
     this.activatedRoute.queryParams.subscribe(params => {
       this.email = params['email'] || null;
-      this.verificationType = params['type'] || 'email'; // default to 'email' verification
+      this.verificationType = params['type'] || 'email';
     });
 
-    // Focus on the first input when component loads
+    // Auto-focus first input for better UX
     setTimeout(() => {
       const firstInput = this.digitInputs?.first?.nativeElement;
       if (firstInput) {
@@ -39,11 +46,12 @@ export class VerifyEmailComponent implements OnInit {
     });
   }
 
+  // Handle input in OTP fields
   onDigitInput(event: Event, index: number): void {
     const input = event.target as HTMLInputElement;
     const value = input.value;
     
-    // Only allow numeric input
+    // Only accept numeric digits
     if (value && !/^\d$/.test(value)) {
       input.value = '';
       this.verificationCode[index] = '';
@@ -52,7 +60,7 @@ export class VerifyEmailComponent implements OnInit {
 
     this.verificationCode[index] = value;
 
-    // Auto-focus next input if current input has a value
+    // Move to next field automatically
     if (value && index < 4) {
       const nextInput = this.digitInputs.toArray()[index + 1]?.nativeElement;
       if (nextInput) {
@@ -61,12 +69,12 @@ export class VerifyEmailComponent implements OnInit {
     }
   }
 
+  // Handle keyboard navigation and special keys
   onKeyDown(event: KeyboardEvent, index: number): void {
     const input = event.target as HTMLInputElement;
 
-    // Handle backspace
+    // Backspace: move to previous field if current is empty
     if (event.key === 'Backspace') {
-      // If current input is empty, move to previous input
       if (!input.value && index > 0) {
         const prevInput = this.digitInputs.toArray()[index - 1]?.nativeElement;
         if (prevInput) {
@@ -76,7 +84,7 @@ export class VerifyEmailComponent implements OnInit {
       }
     }
     
-    // Handle arrow keys
+    // Arrow keys for navigation between fields
     if (event.key === 'ArrowLeft' && index > 0) {
       const prevInput = this.digitInputs.toArray()[index - 1]?.nativeElement;
       if (prevInput) {
@@ -91,18 +99,19 @@ export class VerifyEmailComponent implements OnInit {
       }
     }
 
-    // Handle paste
+    // Support pasting OTP code
     if (event.ctrlKey && event.key === 'v') {
       event.preventDefault();
       this.handlePaste();
     }
 
-    // Handle Enter key
+    // Submit on Enter if code is complete
     if (event.key === 'Enter' && this.isCodeComplete()) {
       this.onVerify();
     }
   }
 
+  // Handle pasted OTP codes from clipboard
   private handlePaste(): void {
     navigator.clipboard.readText().then(text => {
       const digits = text.replace(/\D/g, '').split('').slice(0, 5);
@@ -117,7 +126,7 @@ export class VerifyEmailComponent implements OnInit {
           }
         });
         
-        // Focus on the next empty input or the last one if all are filled
+        // Focus next empty field or last field if all filled
         const nextEmptyIndex = this.verificationCode.findIndex(code => !code);
         const focusIndex = nextEmptyIndex === -1 ? 4 : nextEmptyIndex;
         const targetInput = this.digitInputs.toArray()[focusIndex]?.nativeElement;
@@ -130,10 +139,12 @@ export class VerifyEmailComponent implements OnInit {
     });
   }
 
+  // Check if all 5 digits are entered
   isCodeComplete(): boolean {
     return this.verificationCode.every(digit => digit !== '');
   }
 
+  // Verify the entered OTP code
   onVerify(): void {
     if (!this.isCodeComplete() || this.isLoading) {
       return;
@@ -142,34 +153,32 @@ export class VerifyEmailComponent implements OnInit {
     this.isLoading = true;
     const code = this.verificationCode.join('');
 
-    // Simulate API call
+    // TODO: Replace with actual API verification
     setTimeout(() => {
       this.isLoading = false;
 
-      // TODO: Replace with actual verification logic
       console.log('Verifying code:', code);
       console.log('Email:', this.email);
       console.log('Verification type:', this.verificationType);
 
-      // Handle different verification types
+      // Route based on verification purpose
       if (this.verificationType === 'reset') {
-        // Password reset verification - redirect to create password page
         alert('Code verified! Please create a new password.');
         this.router.navigate(['/auth/create-password']);
       } else {
-        // Email verification - redirect to signin
         alert('Email verified successfully!');
         this.router.navigate(['/auth/signin']);
       }
     }, 2000);
   }
 
+  // Resend verification code to user's email
   onResendCode(): void {
     if (this.isLoading) {
       return;
     }
 
-    // Clear the current code
+    // Clear all input fields
     this.verificationCode = ['', '', '', '', ''];
     this.digitInputs.forEach(input => {
       if (input.nativeElement) {
@@ -177,13 +186,13 @@ export class VerifyEmailComponent implements OnInit {
       }
     });
 
-    // Focus first input
+    // Return focus to first field
     const firstInput = this.digitInputs.first?.nativeElement;
     if (firstInput) {
       firstInput.focus();
     }
 
-    // TODO: Replace with actual resend logic
+    // TODO: Replace with actual API call to resend code
     console.log('Resending verification code...');
     alert('Verification code sent!');
   }
