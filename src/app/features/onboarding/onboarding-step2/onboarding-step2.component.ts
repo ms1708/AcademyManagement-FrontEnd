@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ErrorLoggingService } from '../../../core/services/error-logging.service';
+import { OnboardingDataService } from '../OnboardingDataService';
 
 /**
  * Onboarding Step 2 Component - Additional Learner Details
@@ -12,13 +13,9 @@ import { ErrorLoggingService } from '../../../core/services/error-logging.servic
 @Component({
   selector: 'app-onboarding-step2',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './onboarding-step2.component.html',
-  styleUrls: ['./onboarding-step2.component.scss']
+  styleUrls: ['./onboarding-step2.component.scss'],
 })
 export class OnboardingStep2Component {
   additionalDetailsForm: FormGroup;
@@ -27,6 +24,7 @@ export class OnboardingStep2Component {
   private fb = inject(FormBuilder);
   private errorLoggingService = inject(ErrorLoggingService);
   private router = inject(Router);
+  private onboardingService = inject(OnboardingDataService);
 
   constructor() {
     this.additionalDetailsForm = this.fb.group({
@@ -38,7 +36,7 @@ export class OnboardingStep2Component {
       postalAddressLine2: ['11 Biccard Street'],
       city: ['Johannesburg', [Validators.required]],
       provinceState: ['', [Validators.required]],
-      municipality: ['Jozi']
+      municipality: ['Jozi'],
     });
   }
 
@@ -54,7 +52,8 @@ export class OnboardingStep2Component {
       setTimeout(() => {
         this.isLoading = false;
         this.errorLoggingService.logError('info', `Onboarding step 2 completed for user`);
-        
+        this.onboardingService.setStep2Data(formData);
+
         // Navigate to next step (step 3)
         this.router.navigate(['/onboarding/step3']);
       }, 2000);
@@ -140,4 +139,3 @@ export class OnboardingStep2Component {
     return Math.round((this.getCurrentStep() / this.getTotalSteps()) * 100);
   }
 }
-

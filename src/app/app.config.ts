@@ -6,6 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { routes } from './app.routes';
 import { errorInterceptor } from './core/interceptors/error.interceptor';
 import { ErrorLoggingService } from './core/services/error-logging.service';
+import { authInterceptor } from './core/interceptors/AuthInterceptor.interceptor';
 
 /**
  * Application configuration
@@ -14,8 +15,13 @@ import { ErrorLoggingService } from './core/services/error-logging.service';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withInterceptors([errorInterceptor])),
+    provideHttpClient(
+      withInterceptors([
+        errorInterceptor, // your existing error interceptor
+        authInterceptor, // ✅ add JWT auth interceptor here
+      ])
+    ),
     provideAnimationsAsync(),
-    ErrorLoggingService
-  ]
+    ErrorLoggingService,
+  ],
 };

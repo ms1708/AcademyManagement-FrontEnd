@@ -1,23 +1,23 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import { VerifyEmailComponent } from './verify-email.component';
+import { ForgotPasswordVerifyComponent } from './forgot-password-verify.component';
 
-describe('VerifyEmailComponent', () => {
-  let component: VerifyEmailComponent;
-  let fixture: ComponentFixture<VerifyEmailComponent>;
+describe('ForgotPasswordVerifyComponent', () => {
+  let component: ForgotPasswordVerifyComponent;
+  let fixture: ComponentFixture<ForgotPasswordVerifyComponent>;
   let mockRouter: jasmine.SpyObj<Router>;
 
   beforeEach(async () => {
     const routerSpy = jasmine.createSpyObj('Router', ['navigate']);
 
     await TestBed.configureTestingModule({
-      imports: [VerifyEmailComponent],
+      imports: [ForgotPasswordVerifyComponent],
       providers: [
         { provide: Router, useValue: routerSpy }
       ]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(VerifyEmailComponent);
+    fixture = TestBed.createComponent(ForgotPasswordVerifyComponent);
     component = fixture.componentInstance;
     mockRouter = TestBed.inject(Router) as jasmine.SpyObj<Router>;
   });

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { ErrorLoggingService } from '../../../core/services/error-logging.service';
+import { OnboardingDataService } from '../OnboardingDataService';
 
 /**
  * Onboarding Step 1 Component - Learner Details
@@ -12,13 +13,9 @@ import { ErrorLoggingService } from '../../../core/services/error-logging.servic
 @Component({
   selector: 'app-onboarding-step1',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './onboarding-step1.component.html',
-  styleUrls: ['./onboarding-step1.component.scss']
+  styleUrls: ['./onboarding-step1.component.scss'],
 })
 export class OnboardingStep1Component {
   learnerDetailsForm: FormGroup;
@@ -26,13 +23,23 @@ export class OnboardingStep1Component {
 
   // Mock data for dropdowns
   titles = ['Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Prof.'];
-  nationalities = ['South African', 'American', 'British', 'Canadian', 'Australian', 'German', 'French', 'Other'];
+  nationalities = [
+    'South African',
+    'American',
+    'British',
+    'Canadian',
+    'Australian',
+    'German',
+    'French',
+    'Other',
+  ];
   genders = ['Male', 'Female', 'Other', 'Prefer not to say'];
   disabilities = ['None', 'Visual', 'Hearing', 'Motor', 'Cognitive', 'Other'];
 
   private fb = inject(FormBuilder);
   private errorLoggingService = inject(ErrorLoggingService);
   private router = inject(Router);
+  private onboardingService = inject(OnboardingDataService);
 
   constructor() {
     this.learnerDetailsForm = this.fb.group({
@@ -43,7 +50,7 @@ export class OnboardingStep1Component {
       disability: ['', [Validators.required]],
       specialNeeds: [''],
       contactNumber: ['', [Validators.required]],
-      alternativeContactNumber: ['']
+      alternativeContactNumber: [''],
     });
   }
 
@@ -54,12 +61,16 @@ export class OnboardingStep1Component {
     if (this.learnerDetailsForm.valid) {
       this.isLoading = true;
       const formData = this.learnerDetailsForm.value;
+      const getuserLogindetails = this.onboardingService.getuserLogindetails();
+      formData.studentName = getuserLogindetails.firstName + ' ' + getuserLogindetails.lastName;
+      formData.userId = this.onboardingService.getUserId();
+      formData.email = getuserLogindetails.email ?? 'udit@gmail.com';
 
       // Mock submission - in real app, save data and navigate to next step
       setTimeout(() => {
         this.isLoading = false;
         this.errorLoggingService.logError('info', `Onboarding step 1 completed for user`);
-        
+        this.onboardingService.setStep1Data(formData);
         // Navigate to next step (step 2)
         this.router.navigate(['/onboarding/step2']);
       }, 2000);
