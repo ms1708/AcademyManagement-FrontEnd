@@ -115,6 +115,14 @@ export class SigninComponent {
       }
 
       /**
+       * Navigates to forgot password page
+       */
+      navigateToForgotPassword(): void {
+        this.router.navigate(['/auth/forgot-password']);
+      }
+
+
+      /**
        * Marks all form fields as touched to show validation errors
        */
       private markFormGroupTouched(): void {

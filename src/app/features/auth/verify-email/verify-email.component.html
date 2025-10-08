@@ -1,0 +1,98 @@
+<!-- Verify Email Page -->
+<div class="verify-email-page">
+  <div class="page-container">
+    <div class="main-content">
+      <div class="content-wrapper">
+        <!-- Logo -->
+        <div class="logo-container">
+          <img 
+            class="academy-logo" 
+            src="assets/images/HarmonyLogo.png" 
+            alt="Harmony & Help Academy Logo" 
+          />
+        </div>
+
+        <!-- Main Container -->
+        <div class="main-container">
+          <!-- Instruction Container -->
+          <div class="instruction-container">
+            <h1 class="page-title">Verify Your Email</h1>
+            <p class="page-description">Please enter the verification code sent to your email.</p>
+          </div>
+
+          <!-- Input Container -->
+          <div class="input-container">
+            <input
+              #digit1
+              type="text"
+              class="verification-input"
+              maxlength="1"
+              (input)="onDigitInput($event, 0)"
+              (keydown)="onKeyDown($event, 0)"
+              [(ngModel)]="verificationCode[0]"
+              autocomplete="off"
+            />
+            <input
+              #digit2
+              type="text"
+              class="verification-input"
+              maxlength="1"
+              (input)="onDigitInput($event, 1)"
+              (keydown)="onKeyDown($event, 1)"
+              [(ngModel)]="verificationCode[1]"
+              autocomplete="off"
+            />
+            <input
+              #digit3
+              type="text"
+              class="verification-input"
+              maxlength="1"
+              (input)="onDigitInput($event, 2)"
+              (keydown)="onKeyDown($event, 2)"
+              [(ngModel)]="verificationCode[2]"
+              autocomplete="off"
+            />
+            <input
+              #digit4
+              type="text"
+              class="verification-input"
+              maxlength="1"
+              (input)="onDigitInput($event, 3)"
+              (keydown)="onKeyDown($event, 3)"
+              [(ngModel)]="verificationCode[3]"
+              autocomplete="off"
+            />
+            <input
+              #digit5
+              type="text"
+              class="verification-input"
+              maxlength="1"
+              (input)="onDigitInput($event, 4)"
+              (keydown)="onKeyDown($event, 4)"
+              [(ngModel)]="verificationCode[4]"
+              autocomplete="off"
+            />
+          </div>
+
+          <!-- Verify Button -->
+          <button 
+            type="button" 
+            class="verify-button"
+            [disabled]="!isCodeComplete() || isLoading"
+            (click)="onVerify()">
+            <span *ngIf="!isLoading">Verify</span>
+            <span *ngIf="isLoading">Verifying...</span>
+          </button>
+
+          <!-- Resend Code Link -->
+          <div class="resend-container">
+            <a class="resend-link" (click)="onResendCode()">Resend code</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="basic-footer"></div>
+  </div>
+</div>
