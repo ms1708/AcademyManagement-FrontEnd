@@ -6,8 +6,8 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ErrorLoggingService } from '../../../core/services/error-logging.service';
 
 /**
- * Sign-in component for user authentication
- * Implements the new design with custom styling to match Figma design
+ * Sign In Component
+ * Handles user authentication and login
  */
 @Component({
   selector: 'app-signin',
@@ -36,48 +36,37 @@ export class SigninComponent {
     });
   }
 
-  /**
-   * Handles form submission
-   */
+  // Handle sign in form submission
   onSubmit(): void {
     if (this.signinForm.valid) {
       this.isLoading = true;
       const { email, password } = this.signinForm.value;
 
-          this.authService.login({ email, password }).subscribe({
-            next: () => {
-              this.isLoading = false;
-              this.errorLoggingService.logError('info', `User signed in successfully: ${email}`);
-              // Redirect to dashboard or intended page
-              this.router.navigate(['/dashboard']);
-            },
-            error: (error) => {
-              this.isLoading = false;
-              this.errorLoggingService.logErrorWithStack('Sign-in failed', error as Error);
-              // Handle error (show error message)
-              console.error('Sign-in error:', error);
-            }
-          });
+      this.authService.login({ email, password }).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.errorLoggingService.logError('info', `User signed in successfully: ${email}`);
+          this.router.navigate(['/dashboard']);
+        },
+        error: (error) => {
+          this.isLoading = false;
+          this.errorLoggingService.logErrorWithStack('Sign-in failed', error as Error);
+          console.error('Sign-in error:', error);
+          // TODO: Display error message to user
+        }
+      });
     } else {
       this.markFormGroupTouched();
     }
   }
 
-  /**
-   * Checks if a form field is invalid and touched
-   * @param fieldName - Name of the form field
-   * @returns True if field is invalid and touched
-   */
+  // Check if field has validation errors
   isFieldInvalid(fieldName: string): boolean {
     const field = this.signinForm.get(fieldName);
     return !!(field && field.invalid && (field.dirty || field.touched));
   }
 
-  /**
-   * Gets the error message for a form field
-   * @param fieldName - Name of the form field
-   * @returns Error message string
-   */
+  // Get validation error message for a field
   getFieldError(fieldName: string): string {
     const field = this.signinForm.get(fieldName);
     if (field && field.errors) {
@@ -94,11 +83,7 @@ export class SigninComponent {
     return '';
   }
 
-  /**
-   * Gets the display label for a form field
-   * @param fieldName - Name of the form field
-   * @returns Display label string
-   */
+  // Get display name for a field
   private getFieldLabel(fieldName: string): string {
     const labels: { [key: string]: string } = {
       email: 'Email',
@@ -107,28 +92,21 @@ export class SigninComponent {
     return labels[fieldName] || fieldName;
   }
 
-      /**
-       * Navigates to sign up page
-       */
-      navigateToSignUp(): void {
-        this.router.navigate(['/auth/signup']);
-      }
+  // Navigate to registration page
+  navigateToSignUp(): void {
+    this.router.navigate(['/auth/signup']);
+  }
 
-      /**
-       * Navigates to forgot password page
-       */
-      navigateToForgotPassword(): void {
-        this.router.navigate(['/auth/forgot-password']);
-      }
+  // Navigate to password reset flow
+  navigateToForgotPassword(): void {
+    this.router.navigate(['/auth/forgot-password']);
+  }
 
-
-      /**
-       * Marks all form fields as touched to show validation errors
-       */
-      private markFormGroupTouched(): void {
-        Object.keys(this.signinForm.controls).forEach(key => {
-          const control = this.signinForm.get(key);
-          control?.markAsTouched();
-        });
-      }
+  // Show validation errors on all form fields
+  private markFormGroupTouched(): void {
+    Object.keys(this.signinForm.controls).forEach(key => {
+      const control = this.signinForm.get(key);
+      control?.markAsTouched();
+    });
+  }
 }

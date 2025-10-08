@@ -6,8 +6,8 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ErrorLoggingService } from '../../../core/services/error-logging.service';
 
 /**
- * Sign-up component for user registration
- * Implements the new design with custom styling to match Figma design
+ * Sign Up Component
+ * Handles new user registration with comprehensive validation
  */
 @Component({
   selector: 'app-signup',
@@ -28,11 +28,14 @@ export class SignupComponent {
 
   signupForm: FormGroup;
   isLoading = false;
+  
+  // Track password strength requirements
   passwordRequirements = {
     length: false,
     noPersonalInfo: true,
     hasNumberOrSymbol: false
   };
+  
   selectedCountryCode = '+27';
   countryFlag = '🇿🇦';
 
@@ -47,12 +50,12 @@ export class SignupComponent {
       acceptTerms: [false, [Validators.requiredTrue]]
     }, { validators: this.passwordMatchValidator });
 
-    // Watch password changes for requirements validation
+    // Update password requirement checklist in real-time
     this.signupForm.get('password')?.valueChanges.subscribe(password => {
       this.updatePasswordRequirements(password);
     });
 
-    // Watch email and name changes for password validation
+    // Re-validate password when personal info changes
     this.signupForm.get('email')?.valueChanges.subscribe(() => {
       this.updatePasswordRequirements(this.signupForm.get('password')?.value);
     });

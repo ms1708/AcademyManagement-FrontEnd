@@ -6,8 +6,8 @@ import { ErrorLoggingService } from './error-logging.service';
 import { User, LoginRequest, LoginResponse, RegisterRequest, UpdateProfileRequest, UserRole } from '../models/user.model';
 
 /**
- * Authentication service for managing user authentication state
- * Core functionality for API integration and token management
+ * Authentication Service
+ * Manages user authentication state, tokens, and API interactions
  */
 @Injectable({
   providedIn: 'root'
@@ -16,10 +16,12 @@ export class AuthService {
   private apiService = inject(ApiService);
   private errorLoggingService = inject(ErrorLoggingService);
 
-      private readonly TOKEN_KEY = 'app_token';
-      private readonly USER_KEY = 'app_user';
-      private readonly REFRESH_TOKEN_KEY = 'app_refresh_token';
+  // Local storage keys for auth data
+  private readonly TOKEN_KEY = 'app_token';
+  private readonly USER_KEY = 'app_user';
+  private readonly REFRESH_TOKEN_KEY = 'app_refresh_token';
 
+  // Observable streams for reactive state management
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
@@ -30,9 +32,7 @@ export class AuthService {
     this.initializeAuth();
   }
 
-  /**
-   * Initializes authentication state from stored tokens
-   */
+  // Check stored token on app startup
   private initializeAuth(): void {
     const token = this.getStoredToken();
     const user = this.getStoredUser();
@@ -45,11 +45,7 @@ export class AuthService {
     }
   }
 
-  /**
-   * Logs in a user with email and password
-   * @param credentials - Login credentials
-   * @returns Observable of login response
-   */
+  // Authenticate user with email and password
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.apiService.post<LoginResponse>('auth/login', credentials)
       .pipe(
@@ -65,11 +61,7 @@ export class AuthService {
       );
   }
 
-  /**
-   * Registers a new user
-   * @param userData - User registration data
-   * @returns Observable of registration response
-   */
+  // Create new user account
   register(userData: RegisterRequest): Observable<User> {
     return this.apiService.post<User>('auth/register', userData)
       .pipe(
@@ -84,9 +76,7 @@ export class AuthService {
       );
   }
 
-  /**
-   * Logs out the current user
-   */
+  // Log user out and clear session data
   logout(): void {
     const currentUser = this.currentUserSubject.value;
     
@@ -94,10 +84,10 @@ export class AuthService {
       this.errorLoggingService.logError('info', `User logged out: ${currentUser.email}`);
     }
 
-    // Call logout API if needed
+    // Call logout endpoint
     this.apiService.post('auth/logout', {}).pipe(
       catchError(error => {
-        // Continue with logout even if API call fails
+        // Continue logout even if API fails
         this.errorLoggingService.logError('warn', 'Logout API call failed', error);
         return of(null);
       })
@@ -106,10 +96,7 @@ export class AuthService {
     });
   }
 
-  /**
-   * Refreshes the authentication token
-   * @returns Observable of new token response
-   */
+  // Get new access token using refresh token
   refreshToken(): Observable<LoginResponse> {
     const refreshToken = this.getStoredRefreshToken();
     
@@ -132,11 +119,7 @@ export class AuthService {
       );
   }
 
-  /**
-   * Updates user profile
-   * @param updates - Profile update data
-   * @returns Observable of updated user
-   */
+  // Update user profile information
   updateProfile(updates: UpdateProfileRequest): Observable<User> {
     return this.apiService.put<User>('auth/profile', updates)
       .pipe(
@@ -153,12 +136,7 @@ export class AuthService {
       );
   }
 
-  /**
-   * Changes user password
-   * @param currentPassword - Current password
-   * @param newPassword - New password
-   * @returns Observable of success response
-   */
+  // Change user's password
   changePassword(currentPassword: string, newPassword: string): Observable<unknown> {
     return this.apiService.put('auth/change-password', {
       currentPassword,
@@ -174,11 +152,7 @@ export class AuthService {
     );
   }
 
-  /**
-   * Sends a password reset email to the specified email address
-   * @param email - Email address to send reset link to
-   * @returns Observable of success response
-   */
+  // Send password reset email
   forgotPassword(email: string): Observable<unknown> {
     return this.apiService.post('auth/forgot-password', { email })
       .pipe(
@@ -192,70 +166,44 @@ export class AuthService {
       );
   }
 
-  /**
-   * Checks if the current user has admin role
-   * @returns True if user is admin
-   */
+  // Role-based access checks
   isAdmin(): boolean {
     const user = this.currentUserSubject.value;
     return user?.role === UserRole.ADMIN;
   }
 
-  /**
-   * Checks if the current user has instructor role
-   * @returns True if user is instructor
-   */
   isInstructor(): boolean {
     const user = this.currentUserSubject.value;
     return user?.role === UserRole.INSTRUCTOR;
   }
 
-  /**
-   * Checks if the current user has student role
-   * @returns True if user is student
-   */
   isStudent(): boolean {
     const user = this.currentUserSubject.value;
     return user?.role === UserRole.STUDENT;
   }
 
-  /**
-   * Gets the current user
-   * @returns Current user or null
-   */
+  // Get currently logged in user
   getCurrentUser(): User | null {
     return this.currentUserSubject.value;
   }
 
-  /**
-   * Gets the stored authentication token
-   * @returns Token string or null
-   */
+  // Retrieve auth token from storage
   getStoredToken(): string | null {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
-  /**
-   * Gets the stored refresh token
-   * @returns Refresh token string or null
-   */
+  // Retrieve refresh token from storage
   getStoredRefreshToken(): string | null {
     return localStorage.getItem(this.REFRESH_TOKEN_KEY);
   }
 
-  /**
-   * Gets the stored user data
-   * @returns User object or null
-   */
+  // Retrieve user data from storage
   getStoredUser(): User | null {
     const userData = localStorage.getItem(this.USER_KEY);
     return userData ? JSON.parse(userData) : null;
   }
 
-  /**
-   * Sets authentication data after successful login
-   * @param response - Login response containing user and tokens
-   */
+  // Store authentication data after successful login
   private setAuthData(response: LoginResponse): void {
     localStorage.setItem(this.TOKEN_KEY, response.token);
     localStorage.setItem(this.REFRESH_TOKEN_KEY, response.refreshToken);
@@ -265,17 +213,12 @@ export class AuthService {
     this.isAuthenticatedSubject.next(true);
   }
 
-  /**
-   * Sets stored user data
-   * @param user - User object to store
-   */
+  // Update stored user data
   private setStoredUser(user: User): void {
     localStorage.setItem(this.USER_KEY, JSON.stringify(user));
   }
 
-  /**
-   * Clears all authentication data
-   */
+  // Remove all auth data from storage
   private clearAuthData(): void {
     localStorage.removeItem(this.TOKEN_KEY);
     localStorage.removeItem(this.REFRESH_TOKEN_KEY);
@@ -285,11 +228,7 @@ export class AuthService {
     this.isAuthenticatedSubject.next(false);
   }
 
-  /**
-   * Checks if a token is valid (not expired)
-   * @param token - JWT token to validate
-   * @returns True if token is valid
-   */
+  // Validate JWT token expiry
   private isTokenValid(token: string): boolean {
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
