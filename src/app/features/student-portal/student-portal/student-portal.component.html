@@ -55,13 +55,115 @@
     <!-- Main Content -->
     <main class="main-content">
       <div class="content-wrapper">
-        <!-- Header Section -->
-        <div class="content-header">
-          <div class="header-text">
-            <h1 class="main-title">Course Application</h1>
-            <p class="main-subtitle">Complete your course application in 4 simple steps</p>
+        
+        <!-- Page Header - Always visible -->
+        <div class="page-header">
+          <div class="header-frame">
+            <div class="title-and-status-container">
+              <div class="title-container">
+                <h2 class="welcome-back-dr">Welcome back, {{ userInfo.fullName.split(' ')[0] }}!</h2>
+                <img class="caret-down-icon" alt="" src="assets/caret-down2.svg" />
+              </div>
+              <button class="projectstatus" *ngIf="currentView === 'dashboard'">
+                <div class="status-dot"></div>
+                <div class="active">Active</div>
+              </button>
+            </div>
+            <button class="actions-container" *ngIf="currentView === 'dashboard'">
+              <button class="buttonfilledstandard">
+                <div class="share">Share</div>
+              </button>
+              <img class="iconbuttonoutlinedstandard" alt="" src="assets/iconButtonOutlinedStandard.svg" />
+            </button>
           </div>
         </div>
+
+        <!-- Navigation Tabs - Always visible below header -->
+        <nav class="dashboard-tabs">
+          <button class="tab-item-1" [class.active]="currentView === 'dashboard'" (click)="navigateToView('dashboard')">
+            <div class="dashboard">Dashboard</div>
+          </button>
+          <div class="tabitem3" [class.active]="currentView === 'course-application'" (click)="navigateToView('course-application')">
+            <div class="applications">Applications</div>
+          </div>
+          <div class="tabitem3" [class.active]="currentView === 'my-enrollment'" (click)="navigateToView('my-enrollment')">
+            <div class="applications">Enrolments</div>
+          </div>
+        </nav>
+
+        <!-- Dashboard View -->
+        <div *ngIf="currentView === 'dashboard'" class="dashboard-view">
+
+          <!-- Dashboard Stats Cards -->
+          <section class="dashboard-number-card-strip">
+            <div class="student-dashboard-container">
+              <div class="card-container">
+                <div class="numbercard" *ngFor="let item of dashboardStats">
+                  <div class="frame">
+                    <b class="profile">{{ item.title }}</b>
+                    <img class="dots-horizontal-icon" alt="" src="assets/dots-horizontal.svg" />
+                  </div>
+                  <div class="number-detail">
+                    <h2 class="number-values">{{ item.value }}</h2>
+                    <div class="complete">{{ item.description }}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Application Status Table -->
+          <section class="table">
+            <div class="column1">
+              <div class="student-dashboard-title">
+                <div class="label">
+                  <div class="application-status">Application Status</div>
+                  <img class="caret-down-icon" alt="" src="assets/caret-down.svg" />
+                </div>
+              </div>
+              <div class="text-cell" *ngFor="let application of applicationStatuses">
+                <div class="iso-9000-internal">{{ application.courseName }}</div>
+              </div>
+            </div>
+            <div class="chipcolumn">
+              <button class="title2">
+                <button class="student-dashboard-label">
+                  <div class="status-label"></div>
+                  <img class="caret-down-icon" alt="" src="assets/caret-down.svg" />
+                </button>
+              </button>
+              <div class="chip" *ngFor="let application of applicationStatuses">
+                <div class="student-dashboard-chip" [class]="'status-' + application.status.toLowerCase().replace(' ', '-')">
+                  <div class="status-dot" [class]="'status-dot-' + application.status.toLowerCase().replace(' ', '-')"></div>
+                  <div class="approved">{{ application.status }}</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Enrolled Courses Section -->
+          <div class="event-lineup-grid">
+            <h1 class="enrolled-courses">Enrolled Courses</h1>
+            <section class="row">
+              <div class="event-card" *ngFor="let course of enrolledCourses">
+                <img class="a-professional-setting-featuri" [src]="course.image" alt="{{ course.title }}" />
+                <div class="textcontent">
+                  <h3 class="event-card-iso-9000-internal">{{ course.title }}</h3>
+                  <div class="next-deadline-2024-02-15">{{ course.nextDeadline }}</div>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <!-- Course Application View -->
+        <div *ngIf="currentView === 'course-application'" class="course-application-view">
+          <!-- Subtitle Section -->
+          <div class="content-header">
+            <div class="header-text">
+              <p class="main-subtitle">Complete your course application in 4 simple steps</p>
+            </div>
+          </div>
 
         <!-- Progress Section -->
         <div class="progress-section">
@@ -220,21 +322,32 @@
           </div>
         </div>
 
-        <!-- Form Actions -->
-        <div class="form-actions">
-          <button class="prev-btn" (click)="previousStep()" [disabled]="currentStep === 1">
-            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M13.167 15.5L8.167 10.5L13.167 5.5" stroke="#7E2549" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <span class="btn-text">Previous</span>
-          </button>
-          
-          <button class="next-btn" (click)="nextStep()">
-            <span class="btn-text">Next</span>
-            <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M7.83301 15.5L12.833 10.5L7.83301 5.5" stroke="white" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-          </button>
+          <!-- Form Actions -->
+          <div class="form-actions">
+            <button class="prev-btn" (click)="previousStep()" [disabled]="currentStep === 1">
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.167 15.5L8.167 10.5L13.167 5.5" stroke="#7E2549" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="btn-text">Previous</span>
+            </button>
+            
+            <button class="next-btn" (click)="nextStep()">
+              <span class="btn-text">Next</span>
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.83301 15.5L12.833 10.5L7.83301 5.5" stroke="white" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- My Enrollment View -->
+        <div *ngIf="currentView === 'my-enrollment'" class="my-enrollment-view">
+          <div class="content-header">
+            <div class="header-text">
+              <p class="main-subtitle">View your enrolled courses and progress</p>
+            </div>
+          </div>
+          <!-- Enrollment content will be added here -->
         </div>
       </div>
     </main>
