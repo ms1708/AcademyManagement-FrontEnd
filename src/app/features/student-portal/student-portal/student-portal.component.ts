@@ -19,8 +19,8 @@ import { UserInformation, AdditionalInformation, EducationalBackground, WorkBack
 export class StudentPortalComponent implements OnInit {
   private router = inject(Router);
 
-  currentView: ViewType = 'course-application';
-  currentStep: number = 3;
+  currentView: ViewType = 'dashboard';
+  currentStep: number = 3; // Start at step 3 for programme details
 
   // Mock user data - will be replaced with actual API data
   userInfo: UserInformation = {
@@ -64,6 +64,58 @@ export class StudentPortalComponent implements OnInit {
     hasInternet: false,
     hasLibrary: false
   };
+
+  // Dashboard data
+  dashboardStats = [
+    {
+      title: 'Profile',
+      value: '85%',
+      description: 'Complete'
+    },
+    {
+      title: 'Applications',
+      value: '3',
+      description: 'Submitted'
+    },
+    {
+      title: 'Enrolled',
+      value: '1',
+      description: 'Course'
+    },
+    {
+      title: 'Progress',
+      value: '65%',
+      description: 'Average'
+    }
+  ];
+
+  applicationStatuses = [
+    {
+      courseName: 'ISO 9000 Internal Auditing Training',
+      status: 'Approved'
+    },
+    {
+      courseName: 'ISO 9000 Development And Implementation',
+      status: 'Pending'
+    },
+    {
+      courseName: 'ISO 50001 Internal Auditing Training',
+      status: 'Under Review'
+    }
+  ];
+
+  enrolledCourses = [
+    {
+      title: 'ISO 9000 Internal Auditing Training Course',
+      image: 'https://api.builder.io/api/v1/image/assets/TEMP/professional-setting-featuring-trainer-presenting-group-attentive-students-classroom-training-materials-whiteboard-background@2x.png',
+      nextDeadline: 'Next deadline: 2024-02-15'
+    },
+    {
+      title: 'Status',
+      image: 'https://api.builder.io/api/v1/image/assets/TEMP/group-students-actively-participating-classroom-discussion-teacher-guiding-them@2x.png',
+      nextDeadline: 'Active'
+    }
+  ];
 
   ngOnInit(): void {
     this.loadUserInformation();
