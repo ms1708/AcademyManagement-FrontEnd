@@ -13,13 +13,9 @@ import { ErrorLoggingService } from '../../../core/services/error-logging.servic
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule
-  ],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './forgot-password.component.html',
-  styleUrls: ['./forgot-password.component.scss']
+  styleUrls: ['./forgot-password.component.scss'],
 })
 export class ForgotPasswordComponent {
   // Inject dependencies
@@ -34,7 +30,7 @@ export class ForgotPasswordComponent {
 
   constructor() {
     this.forgotPasswordForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
     });
   }
 
@@ -49,8 +45,8 @@ export class ForgotPasswordComponent {
           this.isLoading = false;
           this.errorLoggingService.logError('info', `Password reset email sent to: ${email}`);
           // Move to OTP verification step
-          this.router.navigate(['/auth/forgot-password-verify'], { 
-            queryParams: { type: 'reset', email: email } 
+          this.router.navigate(['/auth/forgot-password-verify'], {
+            queryParams: { type: 'reset', email: email },
           });
         },
         error: (error: unknown) => {
@@ -58,7 +54,7 @@ export class ForgotPasswordComponent {
           this.errorLoggingService.logErrorWithStack('Password reset failed', error as Error);
           console.error('Password reset error:', error);
           // TODO: Show user-friendly error message
-        }
+        },
       });
     } else {
       this.markFormGroupTouched();
