@@ -29,14 +29,14 @@ export interface PaginationParams {
  * Provides common HTTP operations with error handling, retry logic, and timeout
  */
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiService {
   private http = inject(HttpClient);
 
   private readonly baseUrl: string;
   private readonly defaultTimeout: number;
-  private readonly retryAttempts = 2;
+  private readonly retryAttempts = 0;
 
   constructor() {
     this.baseUrl = environment.apiUrl;
@@ -50,12 +50,17 @@ export class ApiService {
    * @param timeoutMs - Request timeout in milliseconds
    * @returns Observable of API response
    */
-  get<T>(endpoint: string, params?: Record<string, unknown>, timeoutMs?: number): Observable<ApiResponse<T>> {
+  get<T>(
+    endpoint: string,
+    params?: Record<string, unknown>,
+    timeoutMs?: number
+  ): Observable<ApiResponse<T>> {
     const url = `${this.baseUrl}/${endpoint}`;
     const httpParams = this.buildHttpParams(params);
     const timeoutValue = timeoutMs || this.defaultTimeout;
 
-    return this.http.get<ApiResponse<T>>(url, { params: httpParams })
+    return this.http
+      .get<ApiResponse<T>>(url, { params: httpParams })
       .pipe(
         timeout(timeoutValue),
         retry(this.retryAttempts),
@@ -70,11 +75,11 @@ export class ApiService {
    * @param timeoutMs - Request timeout in milliseconds
    * @returns Observable of API response
    */
-  post<T>(endpoint: string, data: unknown, timeoutMs?: number): Observable<ApiResponse<T>> {
+  post<T>(endpoint: string, data: unknown, timeoutMs?: number): Observable<T> {
     const url = `${this.baseUrl}/${endpoint}`;
     const timeoutValue = timeoutMs || this.defaultTimeout;
-
-    return this.http.post<ApiResponse<T>>(url, data, this.getDefaultHeaders())
+    return this.http
+      .post<T>(url, data, this.getDefaultHeaders())
       .pipe(
         timeout(timeoutValue),
         retry(this.retryAttempts),
@@ -93,7 +98,8 @@ export class ApiService {
     const url = `${this.baseUrl}/${endpoint}`;
     const timeoutValue = timeoutMs || this.defaultTimeout;
 
-    return this.http.put<ApiResponse<T>>(url, data, this.getDefaultHeaders())
+    return this.http
+      .put<ApiResponse<T>>(url, data, this.getDefaultHeaders())
       .pipe(
         timeout(timeoutValue),
         retry(this.retryAttempts),
@@ -111,7 +117,8 @@ export class ApiService {
     const url = `${this.baseUrl}/${endpoint}`;
     const timeoutValue = timeoutMs || this.defaultTimeout;
 
-    return this.http.delete<ApiResponse<T>>(url, this.getDefaultHeaders())
+    return this.http
+      .delete<ApiResponse<T>>(url, this.getDefaultHeaders())
       .pipe(
         timeout(timeoutValue),
         retry(this.retryAttempts),
@@ -126,13 +133,13 @@ export class ApiService {
    */
   downloadFile(endpoint: string): Observable<Blob> {
     const url = `${this.baseUrl}/${endpoint}`;
-    
-    return this.http.get(url, { 
-      responseType: 'blob',
-      headers: this.getDefaultHeaders().headers
-    }).pipe(
-      catchError(this.handleError.bind(this))
-    );
+
+    return this.http
+      .get(url, {
+        responseType: 'blob',
+        headers: this.getDefaultHeaders().headers,
+      })
+      .pipe(catchError(this.handleError.bind(this)));
   }
 
   /**
@@ -142,7 +149,7 @@ export class ApiService {
    */
   private buildHttpParams(params?: Record<string, unknown>): HttpParams {
     let httpParams = new HttpParams();
-    
+
     if (params) {
       Object.keys(params).forEach(key => {
         const value = params[key];
@@ -151,7 +158,7 @@ export class ApiService {
         }
       });
     }
-    
+
     return httpParams;
   }
 
@@ -163,8 +170,8 @@ export class ApiService {
     return {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      })
+        Accept: 'application/json',
+      }),
     };
   }
 
@@ -175,21 +182,21 @@ export class ApiService {
    */
   private handleError(error: HttpErrorResponse): Observable<never> {
     let errorMessage = 'An unknown error occurred';
-    
+
     if (error.error instanceof ErrorEvent) {
       // Client-side error
       errorMessage = `Client Error: ${error.error.message}`;
     } else {
       // Server-side error
       errorMessage = `Server Error: ${error.status} - ${error.message}`;
-      
+
       if (error.error && error.error.message) {
         errorMessage = error.error.message;
       }
     }
 
     console.error('API Service Error:', errorMessage, error);
-    
-    return throwError(() => new Error(errorMessage));
+
+    return throwError(() => error);
   }
 }

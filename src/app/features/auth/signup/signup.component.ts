@@ -13,6 +13,7 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ErrorLoggingService } from '../../../core/services/error-logging.service';
 import { AuthenticationService } from '../../../core/services/signin.service';
 import { OnboardingDataService } from '../../onboarding/OnboardingDataService';
+import Swal from 'sweetalert2';
 
 /**
  * Sign-up component for user registration
@@ -158,8 +159,6 @@ export class SignupComponent {
    * Handles form submission
    */
   onSubmit(): void {
-    console.log(this.signupForm.status); // 'VALID' or 'INVALID'
-    console.log(this.signupForm.errors); // any form-level errors
     if (this.signupForm.valid) {
       this.isLoading = true;
       const formData = {
@@ -177,19 +176,34 @@ export class SignupComponent {
             'info',
             `User registered successfully: ${formData.email}`
           );
-          this.onboardingService.setUserData(response);
+          this.onboardingService.setUserData(response.user);
           // Redirect to email verification page
           // this.router.navigate(['/auth/verify-email']);
           this.router.navigate(['/auth/verify-email'], {
             state: {
-              email: response.email,
-              userid: response.id,
+              email: response.user.email,
+              userid: response.user.id,
             },
           });
         },
         error: error => {
           this.isLoading = false;
           this.errorLoggingService.logErrorWithStack('Registration failed', error as Error);
+          if (error.isEmailDuplicate) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Duplicate Email',
+              text: 'This email is already registered. Please use a different email or try logging in.',
+              confirmButtonColor: '#3085d6',
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Signup failed! Please try again later.',
+              confirmButtonColor: '#3085d6',
+            });
+          }
           console.error('Registration error:', error);
         },
       });
@@ -199,7 +213,7 @@ export class SignupComponent {
   }
 
   /**
-   * Navigates to sign in page
+   * Navigates to sign in pagelogin
    */
   navigateToSignIn(): void {
     this.router.navigate(['/auth/signin']);

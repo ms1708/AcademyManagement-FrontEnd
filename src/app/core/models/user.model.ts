@@ -10,7 +10,7 @@ export interface User {
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
-  lastLoginAt?: Date;
+  lastLoginAt?: Date; 
 }
 
 /**
@@ -19,7 +19,7 @@ export interface User {
 export enum UserRole {
   ADMIN = 'admin',
   INSTRUCTOR = 'instructor',
-  STUDENT = 'student'
+  STUDENT = 'student',
 }
 
 /**
@@ -28,8 +28,6 @@ export enum UserRole {
 export interface LoginRequest {
   email: string;
   password: string;
-  rememberMe?: boolean;
-  [key: string]: unknown;
 }
 
 /**
@@ -38,8 +36,9 @@ export interface LoginRequest {
 export interface LoginResponse {
   user: User;
   token: string;
-  refreshToken: string;
-  expiresIn: number;
+  isUserExist: boolean;
+  isEmailVerifed: boolean;
+  isSignInComplete: boolean;
 }
 
 /**
