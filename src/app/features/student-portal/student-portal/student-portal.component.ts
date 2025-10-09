@@ -4,11 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserInformation, AdditionalInformation, EducationalBackground, WorkBackground, ProgrammeDetails, ViewType } from '../../../core/models/user-info.model';
 
-/**
- * Student Portal Component
- * Main dashboard for students to manage applications, view enrollment, and access services
- * Includes multi-step course application form with auto-save functionality
- */
 @Component({
   selector: 'app-student-portal',
   standalone: true,
@@ -19,10 +14,9 @@ import { UserInformation, AdditionalInformation, EducationalBackground, WorkBack
 export class StudentPortalComponent implements OnInit {
   private router = inject(Router);
 
-  currentView: ViewType = 'dashboard';
+  currentView: ViewType = 'course-application';
   currentStep: number = 3; // Start at step 3 for programme details
 
-  // Mock user data - will be replaced with actual API data
   userInfo: UserInformation = {
     fullName: 'Thandi Dlovu',
     email: 'Thandi@Dlovu.com',
@@ -34,14 +28,12 @@ export class StudentPortalComponent implements OnInit {
     homeAddress: '11 Biccard Street, Johannesburg, Gauteng'
   };
 
-  // Optional student information
   additionalInfo: AdditionalInformation = {
     middleName: '',
     maritalStatus: '',
     homeTelephone: ''
   };
 
-  // Educational history tracking
   educationalBackground: EducationalBackground = {
     lastSchoolAttended: '',
     highestGrade: '',
@@ -52,12 +44,10 @@ export class StudentPortalComponent implements OnInit {
     institutionAttended: ''
   };
 
-  // Employment and socio-economic information
   workBackground: WorkBackground = {
     socioEconomicStatus: ''
   };
 
-  // Course selection and learning resources
   programmeDetails: ProgrammeDetails = {
     courseName: '',
     hasComputer: false,
@@ -65,73 +55,21 @@ export class StudentPortalComponent implements OnInit {
     hasLibrary: false
   };
 
-  // Dashboard data
-  dashboardStats = [
-    {
-      title: 'Profile',
-      value: '85%',
-      description: 'Complete'
-    },
-    {
-      title: 'Applications',
-      value: '3',
-      description: 'Submitted'
-    },
-    {
-      title: 'Enrolled',
-      value: '1',
-      description: 'Course'
-    },
-    {
-      title: 'Progress',
-      value: '65%',
-      description: 'Average'
-    }
-  ];
-
-  applicationStatuses = [
-    {
-      courseName: 'ISO 9000 Internal Auditing Training',
-      status: 'Approved'
-    },
-    {
-      courseName: 'ISO 9000 Development And Implementation',
-      status: 'Pending'
-    },
-    {
-      courseName: 'ISO 50001 Internal Auditing Training',
-      status: 'Under Review'
-    }
-  ];
-
-  enrolledCourses = [
-    {
-      title: 'ISO 9000 Internal Auditing Training Course',
-      image: 'https://api.builder.io/api/v1/image/assets/TEMP/professional-setting-featuring-trainer-presenting-group-attentive-students-classroom-training-materials-whiteboard-background@2x.png',
-      nextDeadline: 'Next deadline: 2024-02-15'
-    },
-    {
-      title: 'Status',
-      image: 'https://api.builder.io/api/v1/image/assets/TEMP/group-students-actively-participating-classroom-discussion-teacher-guiding-them@2x.png',
-      nextDeadline: 'Active'
-    }
-  ];
-
   ngOnInit(): void {
+    // Load user information from service/API in real implementation
     this.loadUserInformation();
-    this.loadDraft();
   }
 
-  // Load user profile data
   private loadUserInformation(): void {
-    // TODO: Replace with actual API call to fetch user data
+    // In a real application, this would fetch from a service
+    // For now, we're using mock data that matches the Figma design
     console.log('Loading user information...');
   }
 
-  // Handle sidebar navigation
   navigateToView(view: ViewType): void {
     this.currentView = view;
     
+    // Navigate to the appropriate route
     switch (view) {
       case 'dashboard':
         this.router.navigate(['/student-portal/dashboard']);
@@ -145,26 +83,26 @@ export class StudentPortalComponent implements OnInit {
     }
   }
 
-  // Progress to next step in application
   nextStep(): void {
+    // Validate required fields based on current step
     if (!this.isFormValid()) {
       alert('Please fill in all required fields before proceeding.');
       return;
     }
 
+    // Save current step data
     this.saveDraft();
 
+    // Move to next step
     if (this.currentStep < 4) {
       this.currentStep++;
       console.log(`Moving to Step ${this.currentStep}`);
     } else {
       console.log('Application completed!');
       alert('Application completed successfully!');
-      // TODO: Submit application to backend
     }
   }
 
-  // Go back to previous step
   previousStep(): void {
     if (this.currentStep > 1) {
       this.currentStep--;
@@ -172,37 +110,35 @@ export class StudentPortalComponent implements OnInit {
     }
   }
 
-  // Validate form based on which step user is on
-  isFormValid(): boolean {
-    switch (this.currentStep) {
-      case 1:
-        return !!this.additionalInfo.maritalStatus;
-      case 2:
-        // All educational and work fields required
-        return !!(
-          this.educationalBackground.lastSchoolAttended &&
-          this.educationalBackground.highestGrade &&
-          this.educationalBackground.dateGradeObtained &&
-          this.educationalBackground.highestQualification &&
-          this.educationalBackground.qualificationName &&
-          this.educationalBackground.yearObtained &&
-          this.educationalBackground.institutionAttended &&
-          this.workBackground.socioEconomicStatus
-        );
-      case 3:
-        // Course name and at least one learning resource required
-        return !!(
-          this.programmeDetails.courseName &&
-          (this.programmeDetails.hasComputer || 
-           this.programmeDetails.hasInternet || 
-           this.programmeDetails.hasLibrary)
-        );
-      default:
-        return true;
-    }
-  }
+  // Method to handle form validation based on current step
+         isFormValid(): boolean {
+           switch (this.currentStep) {
+             case 1:
+               return !!this.additionalInfo.maritalStatus;
+             case 2:
+               return !!(
+                 this.educationalBackground.lastSchoolAttended &&
+                 this.educationalBackground.highestGrade &&
+                 this.educationalBackground.dateGradeObtained &&
+                 this.educationalBackground.highestQualification &&
+                 this.educationalBackground.qualificationName &&
+                 this.educationalBackground.yearObtained &&
+                 this.educationalBackground.institutionAttended &&
+                 this.workBackground.socioEconomicStatus
+               );
+             case 3:
+               return !!(
+                 this.programmeDetails.courseName &&
+                 (this.programmeDetails.hasComputer || 
+                  this.programmeDetails.hasInternet || 
+                  this.programmeDetails.hasLibrary)
+               );
+             default:
+               return true;
+           }
+         }
 
-  // Save application progress to local storage
+  // Method to handle saving draft
   saveDraft(): void {
     const draftData = {
       userInfo: this.userInfo,
@@ -214,11 +150,12 @@ export class StudentPortalComponent implements OnInit {
       timestamp: new Date().toISOString()
     };
 
+    // Save to local storage or service
     localStorage.setItem('courseApplicationDraft', JSON.stringify(draftData));
     console.log('Draft saved:', draftData);
   }
 
-  // Restore saved application data
+  // Method to load draft data
   loadDraft(): void {
     const draftData = localStorage.getItem('courseApplicationDraft');
     if (draftData) {
@@ -236,8 +173,9 @@ export class StudentPortalComponent implements OnInit {
     }
   }
 
-  // Trigger auto-save when form data changes
+  // Auto-save functionality
   onFormChange(): void {
+    // Debounced auto-save could be implemented here
     this.saveDraft();
   }
 }

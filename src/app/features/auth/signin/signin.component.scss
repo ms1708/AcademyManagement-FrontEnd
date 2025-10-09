@@ -245,30 +245,32 @@ $transparent-white: rgba(255, 255, 255, 0.90);
   }
 }
 
-// Forgot password link
+// Forgot password
 .forgot-password-container {
   display: flex;
-  width: 600px;
-  justify-content: flex-end;
+  height: 18px;
+  justify-content: center;
   align-items: center;
   flex-shrink: 0;
-  position: relative;
+  width: 100%;
+  justify-content: flex-end;
+  margin-top: -8px;
 }
 
 .forgot-password-link {
-  color: $primary-brand;
+  color: $placeholder-text;
   font-family: Tahoma, -apple-system, Roboto, Helvetica, sans-serif;
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  line-height: normal;
-  cursor: pointer;
-  text-decoration: none;
-  transition: all 0.3s ease;
+  line-height: 18px;
+  text-decoration: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  transition: color 0.3s ease;
 
   &:hover {
-    text-decoration: underline;
-    color: darken($primary-brand, 10%);
+    color: $primary-brand;
   }
 }
 

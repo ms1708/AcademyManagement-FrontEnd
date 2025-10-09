@@ -7,19 +7,32 @@
       <div class="context-content">
         <!-- Icon -->
         <div class="context-icon">
-          <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="20" cy="20" r="20" fill="currentColor"/>
-            <path d="M20 12C16.6863 12 14 14.6863 14 18C14 21.3137 16.6863 24 20 24C23.3137 24 26 21.3137 26 18C26 14.6863 23.3137 12 20 12Z" fill="white"/>
-            <path d="M12 28C12 25.7909 13.7909 24 16 24H24C26.2091 24 28 25.7909 28 28V30H12V28Z" fill="white"/>
+          <svg
+            width="40"
+            height="40"
+            viewBox="0 0 40 40"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <circle cx="20" cy="20" r="20" fill="currentColor" />
+            <path
+              d="M20 12C16.6863 12 14 14.6863 14 18C14 21.3137 16.6863 24 20 24C23.3137 24 26 21.3137 26 18C26 14.6863 23.3137 12 20 12Z"
+              fill="white"
+            />
+            <path
+              d="M12 28C12 25.7909 13.7909 24 16 24H24C26.2091 24 28 25.7909 28 28V30H12V28Z"
+              fill="white"
+            />
           </svg>
         </div>
-        
+
         <!-- Heading -->
         <h1 class="context-title">Learner Details</h1>
-        
+
         <!-- Description -->
         <p class="context-description">
-          Tell us about yourself. This information helps us create your personalized learning profile and ensures we can support your educational journey effectively.
+          Tell us about yourself. This information helps us create your personalized learning
+          profile and ensures we can support your educational journey effectively.
         </p>
 
         <!-- Progress Bar -->
@@ -39,7 +52,11 @@
     <div class="form-section">
       <div class="form-container">
         <!-- Logo -->
-        <img class="academy-logo" src="https://api.builder.io/api/v1/image/assets/TEMP/d765edc4a278dc4383d842745293ea933870fd0c?width=352" alt="App Logo" />
+        <img
+          class="academy-logo"
+          src="https://api.builder.io/api/v1/image/assets/TEMP/d765edc4a278dc4383d842745293ea933870fd0c?width=352"
+          alt="App Logo"
+        />
 
         <!-- Form Title -->
         <h2 class="form-title">Learner Details</h2>
@@ -49,27 +66,27 @@
           <!-- Title Field -->
           <div class="form-field">
             <label class="field-label" for="title">Title *</label>
-            <select
-              id="title"
-              class="field-select"
-              formControlName="title">
+            <select id="title" class="field-select" formControlName="title">
               <option value="" disabled>Select Title</option>
               <option *ngFor="let title of titles" [value]="title">{{ title }}</option>
             </select>
-            <span *ngIf="isFieldInvalid('title')" class="error-message">{{ getFieldError('title') }}</span>
+            <span *ngIf="isFieldInvalid('title')" class="error-message">{{
+              getFieldError('title')
+            }}</span>
           </div>
 
           <!-- Nationality Field -->
           <div class="form-field">
             <label class="field-label" for="nationality">Nationality *</label>
-            <select
-              id="nationality"
-              class="field-select"
-              formControlName="nationality">
+            <select id="nationality" class="field-select" formControlName="nationality">
               <option value="" disabled>Select Nationality</option>
-              <option *ngFor="let nationality of nationalities" [value]="nationality">{{ nationality }}</option>
+              <option *ngFor="let nationality of nationalities" [value]="nationality">
+                {{ nationality }}
+              </option>
             </select>
-            <span *ngIf="isFieldInvalid('nationality')" class="error-message">{{ getFieldError('nationality') }}</span>
+            <span *ngIf="isFieldInvalid('nationality')" class="error-message">{{
+              getFieldError('nationality')
+            }}</span>
           </div>
 
           <!-- Date of Birth Field -->
@@ -80,45 +97,51 @@
               type="date"
               class="field-input"
               formControlName="dateOfBirth"
-              placeholder="Select Date of Birth" />
-            <span *ngIf="isFieldInvalid('dateOfBirth')" class="error-message">{{ getFieldError('dateOfBirth') }}</span>
+              placeholder="Select Date of Birth"
+            />
+            <span *ngIf="isFieldInvalid('dateOfBirth')" class="error-message">{{
+              getFieldError('dateOfBirth')
+            }}</span>
           </div>
 
           <!-- Gender Field -->
           <div class="form-field">
             <label class="field-label" for="gender">Gender *</label>
-            <select
-              id="gender"
-              class="field-select"
-              formControlName="gender">
+            <select id="gender" class="field-select" formControlName="gender">
               <option value="" disabled>Select Gender</option>
               <option *ngFor="let gender of genders" [value]="gender">{{ gender }}</option>
             </select>
-            <span *ngIf="isFieldInvalid('gender')" class="error-message">{{ getFieldError('gender') }}</span>
+            <span *ngIf="isFieldInvalid('gender')" class="error-message">{{
+              getFieldError('gender')
+            }}</span>
           </div>
 
           <!-- Disability Field -->
           <div class="form-field">
             <label class="field-label" for="disability">Disability *</label>
-            <select
-              id="disability"
-              class="field-select"
-              formControlName="disability">
+            <select id="disability" class="field-select" formControlName="disability">
               <option value="" disabled>Select Disability</option>
-              <option *ngFor="let disability of disabilities" [value]="disability">{{ disability }}</option>
+              <option *ngFor="let disability of disabilities" [value]="disability">
+                {{ disability }}
+              </option>
             </select>
-            <span *ngIf="isFieldInvalid('disability')" class="error-message">{{ getFieldError('disability') }}</span>
+            <span *ngIf="isFieldInvalid('disability')" class="error-message">{{
+              getFieldError('disability')
+            }}</span>
           </div>
 
           <!-- Special Needs Requirements Field -->
           <div class="form-field">
-            <label class="field-label" for="specialNeeds">Special Needs Requirements</label>
+            <label class="field-label" for="specialNeedsRequirements"
+              >Special Needs Requirements</label
+            >
             <textarea
-              id="specialNeeds"
+              id="specialNeedsRequirements"
               class="field-textarea"
-              formControlName="specialNeeds"
+              formControlName="specialNeedsRequirements"
               placeholder="Any special needs or accommodations required"
-              rows="4"></textarea>
+              rows="4"
+            ></textarea>
           </div>
 
           <!-- Contact Number Field -->
@@ -133,22 +156,31 @@
                   <span class="code-text">+27</span>
                 </div>
                 <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path
+                    d="M3 4.5L6 7.5L9 4.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
               </div>
               <input
-                id="contactNumber"
+                id="contactNo"
                 type="tel"
                 class="field-input"
-                formControlName="contactNumber"
-                placeholder="Contact Number" />
+                formControlName="contactNo"
+                placeholder="Contact Number"
+              />
             </div>
-            <span *ngIf="isFieldInvalid('contactNumber')" class="error-message">{{ getFieldError('contactNumber') }}</span>
+            <span *ngIf="isFieldInvalid('contactNo')" class="error-message">{{
+              getFieldError('contactNo')
+            }}</span>
           </div>
 
           <!-- Alternative Contact Number Field -->
           <div class="form-field">
-            <label class="field-label" for="alternativeContactNumber">Alternative Contact Number</label>
+            <label class="field-label" for="alternateContactNo">Alternative Contact Number</label>
             <div class="phone-input-container">
               <div class="country-code-select">
                 <div class="flag-container">
@@ -158,23 +190,27 @@
                   <span class="code-text">+27</span>
                 </div>
                 <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path
+                    d="M3 4.5L6 7.5L9 4.5"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
               </div>
               <input
-                id="alternativeContactNumber"
+                id="alternateContactNo"
                 type="tel"
                 class="field-input"
-                formControlName="alternativeContactNumber"
-                placeholder="Alternative Contact Number" />
+                formControlName="alternateContactNo"
+                placeholder="Alternative Contact Number"
+              />
             </div>
           </div>
 
           <!-- Next Button -->
-          <button
-            type="submit"
-            class="next-button"
-            [disabled]="!isFormValid() || isLoading">
+          <button type="submit" class="next-button" [disabled]="!isFormValid() || isLoading">
             <span *ngIf="!isLoading">Next</span>
             <span *ngIf="isLoading">Processing...</span>
           </button>

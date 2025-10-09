@@ -49,10 +49,10 @@ export class EmailVerificationComponent {
     const nav = this.router.getCurrentNavigation();
     this.userEmail = nav?.extras.state?.['email'] || '';
     this.userId = nav?.extras.state?.['userid'] || '';
-    this.onboardingService.setUserId(this.userId);
-    if (!this.userEmail || !this.userId) {
+    if (!this.userEmail && !this.userId) {
       this.router.navigate(['/auth/signup']);
     }
+    this.onboardingService.setUserId(this.userId);
   }
 
   /**

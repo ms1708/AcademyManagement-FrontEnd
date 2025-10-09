@@ -13,10 +13,11 @@ import { AuthService } from '../../../core/services/auth.service';
 import { ErrorLoggingService } from '../../../core/services/error-logging.service';
 import { AuthenticationService } from '../../../core/services/signin.service';
 import { OnboardingDataService } from '../../onboarding/OnboardingDataService';
+import Swal from 'sweetalert2';
 
 /**
- * Sign Up Component
- * Handles new user registration with comprehensive validation
+ * Sign-up component for user registration
+ * Implements the new design with custom styling to match Figma design
  */
 @Component({
   selector: 'app-signup',
@@ -35,14 +36,11 @@ export class SignupComponent {
 
   signupForm: FormGroup;
   isLoading = false;
-  
-  // Track password strength requirements
   passwordRequirements = {
     length: false,
     noPersonalInfo: true,
     hasNumberOrSymbol: false,
   };
-  
   selectedCountryCode = '+27';
   countryFlag = '🇿🇦';
 
@@ -60,12 +58,12 @@ export class SignupComponent {
       { validators: this.passwordMatchValidator }
     );
 
-    // Update password requirement checklist in real-time
+    // Watch password changes for requirements validation
     this.signupForm.get('password')?.valueChanges.subscribe(password => {
       this.updatePasswordRequirements(password);
     });
 
-    // Re-validate password when personal info changes
+    // Watch email and name changes for password validation
     this.signupForm.get('email')?.valueChanges.subscribe(() => {
       this.updatePasswordRequirements(this.signupForm.get('password')?.value);
     });
@@ -161,8 +159,6 @@ export class SignupComponent {
    * Handles form submission
    */
   onSubmit(): void {
-    console.log(this.signupForm.status); // 'VALID' or 'INVALID'
-    console.log(this.signupForm.errors); // any form-level errors
     if (this.signupForm.valid) {
       this.isLoading = true;
       const formData = {
@@ -184,14 +180,29 @@ export class SignupComponent {
           // Redirect to email verification page (signup flow)
           this.router.navigate(['/auth/email-verification'], {
             state: {
-              email: response.email,
-              userid: response.id,
+              email: response.user.email,
+              userid: response.user.id,
             },
           });
         },
         error: error => {
           this.isLoading = false;
           this.errorLoggingService.logErrorWithStack('Registration failed', error as Error);
+          if (error.isEmailDuplicate) {
+            Swal.fire({
+              icon: 'warning',
+              title: 'Duplicate Email',
+              text: 'This email is already registered. Please use a different email or try logging in.',
+              confirmButtonColor: '#3085d6',
+            });
+          } else {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Signup failed! Please try again later.',
+              confirmButtonColor: '#3085d6',
+            });
+          }
           console.error('Registration error:', error);
         },
       });
@@ -201,7 +212,7 @@ export class SignupComponent {
   }
 
   /**
-   * Navigates to sign in page
+   * Navigates to sign in pagelogin
    */
   navigateToSignIn(): void {
     this.router.navigate(['/auth/signin']);

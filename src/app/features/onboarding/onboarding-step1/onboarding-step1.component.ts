@@ -48,9 +48,10 @@ export class OnboardingStep1Component {
       dateOfBirth: ['', [Validators.required]],
       gender: ['', [Validators.required]],
       disability: ['', [Validators.required]],
-      specialNeeds: [''],
-      contactNumber: ['', [Validators.required]],
-      alternativeContactNumber: [''],
+      specialNeedsRequirements: [''],
+      contactNo: ['', [Validators.required]],
+      alternateContactNo: [''],
+      userId: '',
     });
   }
 
@@ -62,9 +63,14 @@ export class OnboardingStep1Component {
       this.isLoading = true;
       const formData = this.learnerDetailsForm.value;
       const getuserLogindetails = this.onboardingService.getuserLogindetails();
-      formData.studentName = getuserLogindetails.firstName + ' ' + getuserLogindetails.lastName;
+      //formData.studentName = getuserLogindetails.firstName + ' ' + getuserLogindetails.lastName;
+      formData.studentName =
+        `${getuserLogindetails?.firstName ?? ''} ${getuserLogindetails?.lastName ?? ''}`.trim() ||
+        'Udit';
+
       formData.userId = this.onboardingService.getUserId();
-      formData.email = getuserLogindetails.email ?? 'udit@gmail.com';
+      // formData.email = getuserLogindetails.email ?? 'udit@gmail.com';
+      formData.email = getuserLogindetails?.email ?? 'default@example.com';
 
       // Mock submission - in real app, save data and navigate to next step
       setTimeout(() => {

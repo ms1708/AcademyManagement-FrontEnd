@@ -62,20 +62,20 @@ export class OnboardingStep3Component {
         .subscribe({
           next: res => {
             console.log('Enrollment submitted successfully', res);
-            this.router.navigate(['/onboarding/success']);
+            this.router.navigate(['/dashboard']);
           },
           error: err => {
             console.error('Error submitting enrollment', err);
           },
         });
-      // Mock submission - in real app, complete onboarding and redirect to dashboard
-      setTimeout(() => {
-        this.isLoading = false;
-        this.errorLoggingService.logError('info', `Onboarding completed successfully for user`);
+      // // Mock submission - in real app, complete onboarding and redirect to dashboard
+      // setTimeout(() => {
+      //   this.isLoading = false;
+      //   this.errorLoggingService.logError('info', `Onboarding completed successfully for user`);
 
-        // Navigate to dashboard or success page
-        this.router.navigate(['/dashboard']);
-      }, 2000);
+      //   // Navigate to dashboard or success page
+      //   this.router.navigate(['/dashboard']);
+      // }, 2000);
     } else {
       this.markFormGroupTouched();
     }

@@ -7,8 +7,11 @@ export interface SignUpRequest {
 }
 
 export interface SignUpResponse {
-  id: string;
-  email: string;
-  token?: string; // if your API returns JWT after signup
-  message?: string;
+  user: {
+    id: string;
+    email: string;
+    token?: string; // optional if your API returns a token
+    message?: string;
+  };
+  isEmailDuplicate: boolean;
 }
