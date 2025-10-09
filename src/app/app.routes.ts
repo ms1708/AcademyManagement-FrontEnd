@@ -36,13 +36,8 @@ export const routes: Routes = [
       {
         path: 'forgot-password',
         loadComponent: () =>
-          import('./features/auth/signin/signin.component').then(m => m.SigninComponent), // Placeholder
-      },
-      {
-        path: 'forgot-password-verify',
-        loadComponent: () =>
-          import('./features/auth/forgot-password-verify/forgot-password-verify.component').then(
-            m => m.ForgotPasswordVerifyComponent
+          import('./features/auth/forgot-password/forgot-password.component').then(
+            m => m.ForgotPasswordComponent
           ),
       },
       {
