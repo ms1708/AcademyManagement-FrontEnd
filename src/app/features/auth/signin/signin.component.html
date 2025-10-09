@@ -7,7 +7,8 @@
       <div class="welcome-content">
         <h1 class="welcome-title">Welcome Back</h1>
         <p class="welcome-description">
-          Continue your journey in a supportive and inclusive environment where you can thrive and achieve your full potential through our holistic approach to education.
+          Continue your journey in a supportive and inclusive environment where you can thrive and
+          achieve your full potential through our holistic approach to education.
         </p>
       </div>
     </div>
@@ -16,7 +17,11 @@
     <div class="form-section">
       <div class="form-container">
         <!-- Logo -->
-        <img class="academy-logo" src="https://api.builder.io/api/v1/image/assets/TEMP/d765edc4a278dc4383d842745293ea933870fd0c?width=352" alt="App Logo" />
+        <img
+          class="academy-logo"
+          src="https://api.builder.io/api/v1/image/assets/TEMP/d765edc4a278dc4383d842745293ea933870fd0c?width=352"
+          alt="App Logo"
+        />
 
         <!-- Tab Toggle -->
         <div class="auth-tabs">
@@ -26,42 +31,41 @@
 
         <!-- Sign In Form -->
         <form class="signin-form" [formGroup]="signinForm" (ngSubmit)="onSubmit()">
-              <!-- Email Field -->
-              <div class="form-field">
-                <label class="field-label" for="email">Email Address</label>
-                <input
-                  id="email"
-                  type="email"
-                  class="field-input"
-                  formControlName="email"
-                  placeholder="Enter your email"
-                  autocomplete="email"
-                />
-              </div>
+          <!-- Email Field -->
+          <div class="form-field">
+            <label class="field-label" for="email">Email Address</label>
+            <input
+              id="email"
+              type="email"
+              class="field-input"
+              formControlName="email"
+              placeholder="Enter your email"
+              autocomplete="email"
+            />
+          </div>
 
-              <!-- Password Field -->
-              <div class="form-field">
-                <label class="field-label" for="password">Password</label>
-                <input
-                  id="password"
-                  type="password"
-                  class="field-input"
-                  formControlName="password"
-                  placeholder="Enter Password"
-                  autocomplete="current-password"
-                />
-              </div>
+          <!-- Password Field -->
+          <div class="form-field">
+            <label class="field-label" for="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              class="field-input"
+              formControlName="password"
+              placeholder="Enter Password"
+              autocomplete="current-password"
+            />
+          </div>
 
           <!-- Forgot Password Link -->
           <div class="forgot-password-container">
-            <a href="#" class="forgot-password-link">Forgot Password?</a>
+            <a class="forgot-password-link" (click)="navigateToForgotPassword()"
+              >Forgot Password?</a
+            >
           </div>
 
           <!-- Sign In Button -->
-          <button 
-            type="submit" 
-            class="signin-button"
-            [disabled]="signinForm.invalid || isLoading">
+          <button type="submit" class="signin-button" [disabled]="signinForm.invalid || isLoading">
             <span *ngIf="!isLoading">Sign In</span>
             <span *ngIf="isLoading">Signing In...</span>
           </button>

@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { ErrorLoggingService } from '../../../core/services/error-logging.service';
+import Swal from 'sweetalert2';
 
 /**
  * Forgot Password Component
@@ -51,6 +52,12 @@ export class ForgotPasswordComponent {
         },
         error: (error: unknown) => {
           this.isLoading = false;
+          Swal.fire({
+            icon: 'error',
+            title: 'Email Not Found',
+            text: 'No account exists with this email. Please sign up first.',
+            confirmButtonColor: '#3085d6',
+          });
           this.errorLoggingService.logErrorWithStack('Password reset failed', error as Error);
           console.error('Password reset error:', error);
           // TODO: Show user-friendly error message

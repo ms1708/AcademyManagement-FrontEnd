@@ -101,7 +101,7 @@ export class SigninComponent {
                     this.router.navigate(['/auth/verify-email'], {
                       state: {
                         email: email,
-                     userid: err.user.id,
+                        userid: err.user.id,
                       },
                     });
                   },
@@ -171,6 +171,9 @@ export class SigninComponent {
    */
   navigateToSignUp(): void {
     this.router.navigate(['/auth/signup']);
+  }
+  navigateToForgotPassword(): void {
+    this.router.navigate(['/auth/forgot-password']);
   }
 
   /**

@@ -190,22 +190,19 @@ export class AuthService {
 
   //forget passwor
   forgotPassword(email: string): Observable<unknown> {
-    return this.apiService
-      .post('auth/forgot-password', { email })
+    return this.apiService.post('Account/ForgotPassword', JSON.stringify(email)).pipe(
+      tap(() => {
+        this.errorLoggingService.logError('info', `Password reset email sent to: ${email}`);
+      }),
 
-      .pipe(
-        tap(() => {
-          this.errorLoggingService.logError('info', `Password reset email sent to: ${email}`);
-        }),
+      catchError(error => {
+        this.errorLoggingService.logErrorWithStack('Forgot password failed', error as Error, {
+          email,
+        });
 
-        catchError(error => {
-          this.errorLoggingService.logErrorWithStack('Forgot password failed', error as Error, {
-            email,
-          });
-
-          throw error;
-        })
-      );
+        throw error;
+      })
+    );
   }
   /**
    * Checks if the current user has admin role
