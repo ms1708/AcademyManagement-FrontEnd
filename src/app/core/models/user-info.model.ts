@@ -27,6 +27,16 @@ export interface EducationalBackground {
 
 export interface WorkBackground {
   socioEconomicStatus: string;
+  roleName?: string;
+  mainResponsibilities?: string;
+  employerDetails?: {
+    companyName: string;
+    contactPerson: string;
+    telephoneNumber: string;
+    cellphoneNumber: string;
+    emailAddress: string;
+    physicalAddress: string;
+  };
 }
 
 export interface ProgrammeDetails {

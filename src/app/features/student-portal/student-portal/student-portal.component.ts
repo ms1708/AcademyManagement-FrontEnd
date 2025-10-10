@@ -45,7 +45,17 @@ export class StudentPortalComponent implements OnInit {
   };
 
   workBackground: WorkBackground = {
-    socioEconomicStatus: ''
+    socioEconomicStatus: '',
+    roleName: '',
+    mainResponsibilities: '',
+    employerDetails: {
+      companyName: '',
+      contactPerson: '',
+      telephoneNumber: '',
+      cellphoneNumber: '',
+      emailAddress: '',
+      physicalAddress: ''
+    }
   };
 
   programmeDetails: ProgrammeDetails = {
@@ -191,7 +201,7 @@ export class StudentPortalComponent implements OnInit {
       case 1:
         return !!this.additionalInfo.maritalStatus;
       case 2:
-        return !!(
+        const educationValid = !!(
           this.educationalBackground.lastSchoolAttended &&
           this.educationalBackground.highestGrade &&
           this.educationalBackground.dateGradeObtained &&
@@ -201,6 +211,23 @@ export class StudentPortalComponent implements OnInit {
           this.educationalBackground.institutionAttended &&
           this.workBackground.socioEconomicStatus
         );
+        
+        // Check employment fields if employed or self-employed
+        if (this.workBackground.socioEconomicStatus === 'employed' || 
+            this.workBackground.socioEconomicStatus === 'self-employed') {
+          return educationValid && !!(
+            this.workBackground.roleName &&
+            this.workBackground.mainResponsibilities &&
+            this.workBackground.employerDetails?.companyName &&
+            this.workBackground.employerDetails?.contactPerson &&
+            this.workBackground.employerDetails?.telephoneNumber &&
+            this.workBackground.employerDetails?.cellphoneNumber &&
+            this.workBackground.employerDetails?.emailAddress &&
+            this.workBackground.employerDetails?.physicalAddress
+          );
+        }
+        
+        return educationValid;
       case 3:
         return !!(
           this.programmeDetails.courseName &&
@@ -254,5 +281,11 @@ export class StudentPortalComponent implements OnInit {
   onFormChange(): void {
     // Debounced auto-save could be implemented here
     this.saveDraft();
+  }
+
+  // Check if employment fields should be displayed
+  showEmploymentFields(): boolean {
+    return this.workBackground.socioEconomicStatus === 'employed' || 
+           this.workBackground.socioEconomicStatus === 'self-employed';
   }
 }
