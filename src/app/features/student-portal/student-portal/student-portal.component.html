@@ -169,25 +169,25 @@
         <div class="progress-section">
           <div class="progress-indicators">
             <div class="progress-step">
-              <div class="step-line completed"></div>
+              <div class="step-line" [class.completed]="currentStep >= 1"></div>
               <svg class="step-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.08301 12L10.083 8L6.08301 4" stroke="#7E2549" stroke-opacity="0.4" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
             <div class="progress-step">
-              <div class="step-line"></div>
+              <div class="step-line" [class.completed]="currentStep >= 2"></div>
               <svg class="step-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.16602 12L10.166 8L6.16602 4" stroke="#7E2549" stroke-opacity="0.4" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
             <div class="progress-step">
-              <div class="step-line"></div>
+              <div class="step-line" [class.completed]="currentStep >= 3"></div>
               <svg class="step-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6.25 12L10.25 8L6.25 4" stroke="#7E2549" stroke-opacity="0.4" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </div>
             <div class="progress-step">
-              <div class="step-line"></div>
+              <div class="step-line" [class.completed]="currentStep >= 4"></div>
             </div>
           </div>
           <div class="step-text">Step {{ currentStep }} of 4</div>
@@ -196,6 +196,80 @@
         <!-- Form Card -->
         <div class="form-card">
           <div class="form-content">
+            <!-- Step 1: Additional Information Section -->
+            <div class="additional-info-section" *ngIf="currentStep === 1">
+              <h2 class="section-title">Additional Information</h2>
+              <p class="section-description">Please provide additional information to complete your profile</p>
+
+              <!-- User Information Display -->
+              <div class="user-info-display">
+                <h3 class="subsection-title">Your Profile Information</h3>
+                <div class="info-grid">
+                  <div class="info-item">
+                    <label class="info-label">Full Name</label>
+                    <p class="info-value">{{ userInfo.fullName }}</p>
+                  </div>
+                  <div class="info-item">
+                    <label class="info-label">Email</label>
+                    <p class="info-value">{{ userInfo.email }}</p>
+                  </div>
+                  <div class="info-item">
+                    <label class="info-label">Contact Number</label>
+                    <p class="info-value">{{ userInfo.contactNumber }}</p>
+                  </div>
+                  <div class="info-item">
+                    <label class="info-label">Date of Birth</label>
+                    <p class="info-value">{{ userInfo.dateOfBirth }}</p>
+                  </div>
+                  <div class="info-item">
+                    <label class="info-label">ID Number</label>
+                    <p class="info-value">{{ userInfo.idNumber }}</p>
+                  </div>
+                  <div class="info-item">
+                    <label class="info-label">Gender</label>
+                    <p class="info-value">{{ userInfo.gender }}</p>
+                  </div>
+                  <div class="info-item">
+                    <label class="info-label">Nationality</label>
+                    <p class="info-value">{{ userInfo.nationality }}</p>
+                  </div>
+                  <div class="info-item full-width">
+                    <label class="info-label">Home Address</label>
+                    <p class="info-value">{{ userInfo.homeAddress }}</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Additional Information Form -->
+              <div class="additional-info-form">
+                <h3 class="subsection-title">Additional Details</h3>
+                
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Middle Name (Optional)</label>
+                    <input type="text" class="form-input" placeholder="Enter middle name" [(ngModel)]="additionalInfo.middleName" (ngModelChange)="onFormChange()">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Home Telephone (Optional)</label>
+                    <input type="tel" class="form-input" placeholder="Enter home telephone" [(ngModel)]="additionalInfo.homeTelephone" (ngModelChange)="onFormChange()">
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Marital Status *</label>
+                    <select class="form-select" [(ngModel)]="additionalInfo.maritalStatus" (ngModelChange)="onFormChange()">
+                      <option value="">Select Marital Status</option>
+                      <option value="single">Single</option>
+                      <option value="married">Married</option>
+                      <option value="divorced">Divorced</option>
+                      <option value="widowed">Widowed</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Educational and Work Background Section -->
             <div class="educational-work-section" *ngIf="currentStep === 2">
               <h2 class="section-title">Educational and Work Background</h2>
@@ -319,6 +393,141 @@
                 </ul>
               </div>
             </div>
+
+            <!-- Step 4: Review and Confirmation Section -->
+            <div class="review-confirmation-section" *ngIf="currentStep === 4">
+              <h2 class="section-title">Review Your Application</h2>
+              <p class="section-description">Please review all the information before submitting your application</p>
+
+              <!-- Step 1 Review: Additional Information -->
+              <div class="review-card">
+                <div class="review-header">
+                  <h3 class="review-section-title">Step 1: Additional Information</h3>
+                  <button class="edit-btn" (click)="currentStep = 1">Edit</button>
+                </div>
+                <div class="review-content">
+                  <div class="review-row">
+                    <span class="review-label">Full Name:</span>
+                    <span class="review-value">{{ userInfo.fullName }}</span>
+                  </div>
+                  <div class="review-row" *ngIf="additionalInfo.middleName">
+                    <span class="review-label">Middle Name:</span>
+                    <span class="review-value">{{ additionalInfo.middleName }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Email:</span>
+                    <span class="review-value">{{ userInfo.email }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Contact Number:</span>
+                    <span class="review-value">{{ userInfo.contactNumber }}</span>
+                  </div>
+                  <div class="review-row" *ngIf="additionalInfo.homeTelephone">
+                    <span class="review-label">Home Telephone:</span>
+                    <span class="review-value">{{ additionalInfo.homeTelephone }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Marital Status:</span>
+                    <span class="review-value">{{ additionalInfo.maritalStatus | titlecase }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Date of Birth:</span>
+                    <span class="review-value">{{ userInfo.dateOfBirth }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">ID Number:</span>
+                    <span class="review-value">{{ userInfo.idNumber }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Gender:</span>
+                    <span class="review-value">{{ userInfo.gender }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Nationality:</span>
+                    <span class="review-value">{{ userInfo.nationality }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Home Address:</span>
+                    <span class="review-value">{{ userInfo.homeAddress }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 2 Review: Educational and Work Background -->
+              <div class="review-card">
+                <div class="review-header">
+                  <h3 class="review-section-title">Step 2: Educational & Work Background</h3>
+                  <button class="edit-btn" (click)="currentStep = 2">Edit</button>
+                </div>
+                <div class="review-content">
+                  <h4 class="review-subsection-title">Educational Background</h4>
+                  <div class="review-row">
+                    <span class="review-label">Last School Attended:</span>
+                    <span class="review-value">{{ educationalBackground.lastSchoolAttended }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Highest Grade:</span>
+                    <span class="review-value">{{ educationalBackground.highestGrade }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Date Grade Obtained:</span>
+                    <span class="review-value">{{ educationalBackground.dateGradeObtained }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Highest Qualification:</span>
+                    <span class="review-value">{{ educationalBackground.highestQualification | titlecase }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Qualification Name:</span>
+                    <span class="review-value">{{ educationalBackground.qualificationName }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Year Obtained:</span>
+                    <span class="review-value">{{ educationalBackground.yearObtained }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Institution Attended:</span>
+                    <span class="review-value">{{ educationalBackground.institutionAttended }}</span>
+                  </div>
+                  
+                  <h4 class="review-subsection-title">Work Background</h4>
+                  <div class="review-row">
+                    <span class="review-label">Socio-Economic Status:</span>
+                    <span class="review-value">{{ workBackground.socioEconomicStatus | titlecase }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Step 3 Review: Programme Details -->
+              <div class="review-card">
+                <div class="review-header">
+                  <h3 class="review-section-title">Step 3: Programme Details</h3>
+                  <button class="edit-btn" (click)="currentStep = 3">Edit</button>
+                </div>
+                <div class="review-content">
+                  <div class="review-row">
+                    <span class="review-label">Course Name:</span>
+                    <span class="review-value">{{ programmeDetails.courseName }}</span>
+                  </div>
+                  <div class="review-row">
+                    <span class="review-label">Learning Resources:</span>
+                    <span class="review-value">
+                      <span *ngIf="programmeDetails.hasComputer">Computer, </span>
+                      <span *ngIf="programmeDetails.hasInternet">Internet, </span>
+                      <span *ngIf="programmeDetails.hasLibrary">Library</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Terms and Conditions -->
+              <div class="terms-section">
+                <label class="checkbox-label large">
+                  <input type="checkbox" [(ngModel)]="termsAccepted">
+                  <span class="checkbox-text">I confirm that all the information provided is accurate and I accept the terms and conditions</span>
+                </label>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -332,8 +541,8 @@
             </button>
             
             <button class="next-btn" (click)="nextStep()">
-              <span class="btn-text">Next</span>
-              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <span class="btn-text">{{ currentStep === 4 ? 'Submit Application' : 'Next' }}</span>
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="currentStep !== 4">
                 <path d="M7.83301 15.5L12.833 10.5L7.83301 5.5" stroke="white" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>

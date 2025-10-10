@@ -15,7 +15,7 @@ export class StudentPortalComponent implements OnInit {
   private router = inject(Router);
 
   currentView: ViewType = 'dashboard';
-  currentStep: number = 3; // Start at step 3 for programme details
+  currentStep: number = 1; // Start at step 1 for additional information
 
   userInfo: UserInformation = {
     fullName: 'Thandi Dlovu',
@@ -54,6 +54,8 @@ export class StudentPortalComponent implements OnInit {
     hasInternet: false,
     hasLibrary: false
   };
+
+  termsAccepted: boolean = false;
 
   // Dashboard data
   dashboardStats = [
@@ -138,21 +140,42 @@ export class StudentPortalComponent implements OnInit {
   nextStep(): void {
     // Validate required fields based on current step
     if (!this.isFormValid()) {
-      alert('Please fill in all required fields before proceeding.');
+      const errorMessage = this.currentStep === 4 
+        ? 'Please accept the terms and conditions to submit your application.' 
+        : 'Please fill in all required fields before proceeding.';
+      alert(errorMessage);
       return;
     }
 
     // Save current step data
     this.saveDraft();
 
-    // Move to next step
+    // Move to next step or submit
     if (this.currentStep < 4) {
       this.currentStep++;
       console.log(`Moving to Step ${this.currentStep}`);
     } else {
-      console.log('Application completed!');
-      alert('Application completed successfully!');
+      // Submit the application
+      this.submitApplication();
     }
+  }
+
+  submitApplication(): void {
+    console.log('Submitting application...');
+    console.log('Application Data:', {
+      userInfo: this.userInfo,
+      additionalInfo: this.additionalInfo,
+      educationalBackground: this.educationalBackground,
+      workBackground: this.workBackground,
+      programmeDetails: this.programmeDetails
+    });
+    
+    alert('Application submitted successfully! You will receive a confirmation email shortly.');
+    
+    // In a real application, this would make an API call to submit the data
+    // After successful submission, redirect to dashboard
+    this.currentView = 'dashboard';
+    this.router.navigate(['/student-portal/dashboard']);
   }
 
   previousStep(): void {
@@ -163,32 +186,34 @@ export class StudentPortalComponent implements OnInit {
   }
 
   // Method to handle form validation based on current step
-         isFormValid(): boolean {
-           switch (this.currentStep) {
-             case 1:
-               return !!this.additionalInfo.maritalStatus;
-             case 2:
-               return !!(
-                 this.educationalBackground.lastSchoolAttended &&
-                 this.educationalBackground.highestGrade &&
-                 this.educationalBackground.dateGradeObtained &&
-                 this.educationalBackground.highestQualification &&
-                 this.educationalBackground.qualificationName &&
-                 this.educationalBackground.yearObtained &&
-                 this.educationalBackground.institutionAttended &&
-                 this.workBackground.socioEconomicStatus
-               );
-             case 3:
-               return !!(
-                 this.programmeDetails.courseName &&
-                 (this.programmeDetails.hasComputer || 
-                  this.programmeDetails.hasInternet || 
-                  this.programmeDetails.hasLibrary)
-               );
-             default:
-               return true;
-           }
-         }
+  isFormValid(): boolean {
+    switch (this.currentStep) {
+      case 1:
+        return !!this.additionalInfo.maritalStatus;
+      case 2:
+        return !!(
+          this.educationalBackground.lastSchoolAttended &&
+          this.educationalBackground.highestGrade &&
+          this.educationalBackground.dateGradeObtained &&
+          this.educationalBackground.highestQualification &&
+          this.educationalBackground.qualificationName &&
+          this.educationalBackground.yearObtained &&
+          this.educationalBackground.institutionAttended &&
+          this.workBackground.socioEconomicStatus
+        );
+      case 3:
+        return !!(
+          this.programmeDetails.courseName &&
+          (this.programmeDetails.hasComputer || 
+           this.programmeDetails.hasInternet || 
+           this.programmeDetails.hasLibrary)
+        );
+      case 4:
+        return this.termsAccepted;
+      default:
+        return true;
+    }
+  }
 
   // Method to handle saving draft
   saveDraft(): void {
