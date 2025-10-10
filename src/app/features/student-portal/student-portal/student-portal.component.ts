@@ -165,9 +165,13 @@ export class StudentPortalComponent implements OnInit {
     this.saveDraft();
 
     // Move to next step or submit
-    if (this.currentStep < 5) {
+    if (this.currentStep < 4) {
       this.currentStep++;
       console.log(`Moving to Step ${this.currentStep}`);
+    } else if (this.currentStep === 4) {
+      // Move to Final Confirmation
+      this.currentStep = 5;
+      console.log(`Moving to Final Confirmation`);
     } else {
       // Submit the application
       this.submitApplication();

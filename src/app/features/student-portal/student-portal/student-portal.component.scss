@@ -191,9 +191,14 @@
         height: 8px;
         border-radius: 22369600px;
         background: rgba(126, 37, 73, 0.20);
+        transition: background 0.3s ease;
+        
+        &.current {
+          background: #B9225F;
+        }
         
         &.completed {
-          background: #B9225F;
+          background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
         }
       }
       
@@ -2294,5 +2299,48 @@
   .form-card {
     border: 1px solid #ccc;
     box-shadow: none;
+  }
+}
+
+// Special Completion Indicator for Final Confirmation
+.completion-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 8px;
+
+  .completion-circle {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    animation: completionPulse 2s ease-in-out infinite;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
+
+.final-confirmation-text {
+  color: #28a745;
+  font-weight: 600;
+  font-size: 1.1em;
+}
+
+// Completion animation
+@keyframes completionPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
   }
 }
