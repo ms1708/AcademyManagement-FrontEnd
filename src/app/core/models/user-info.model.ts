@@ -46,12 +46,17 @@ export interface ProgrammeDetails {
   hasLibrary: boolean;
 }
 
+export interface PaymentDetails {
+  sourceOfFunding: string;
+}
+
 export interface CourseApplicationData {
   userInfo: UserInformation;
   additionalInfo: AdditionalInformation;
   educationalBackground?: EducationalBackground;
   workBackground?: WorkBackground;
   programmeDetails?: ProgrammeDetails;
+  paymentDetails?: PaymentDetails;
   currentStep: number;
   selectedCourse?: string;
   uploadedDocuments?: string[];

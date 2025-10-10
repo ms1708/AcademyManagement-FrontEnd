@@ -2,7 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { UserInformation, AdditionalInformation, EducationalBackground, WorkBackground, ProgrammeDetails, ViewType } from '../../../core/models/user-info.model';
+import { UserInformation, AdditionalInformation, EducationalBackground, WorkBackground, ProgrammeDetails, PaymentDetails, ViewType } from '../../../core/models/user-info.model';
 
 @Component({
   selector: 'app-student-portal',
@@ -63,6 +63,10 @@ export class StudentPortalComponent implements OnInit {
     hasComputer: false,
     hasInternet: false,
     hasLibrary: false
+  };
+
+  paymentDetails: PaymentDetails = {
+    sourceOfFunding: ''
   };
 
   termsAccepted: boolean = false;
@@ -150,7 +154,7 @@ export class StudentPortalComponent implements OnInit {
   nextStep(): void {
     // Validate required fields based on current step
     if (!this.isFormValid()) {
-      const errorMessage = this.currentStep === 4 
+      const errorMessage = this.currentStep === 5 
         ? 'Please accept the terms and conditions to submit your application.' 
         : 'Please fill in all required fields before proceeding.';
       alert(errorMessage);
@@ -161,7 +165,7 @@ export class StudentPortalComponent implements OnInit {
     this.saveDraft();
 
     // Move to next step or submit
-    if (this.currentStep < 4) {
+    if (this.currentStep < 5) {
       this.currentStep++;
       console.log(`Moving to Step ${this.currentStep}`);
     } else {
@@ -177,7 +181,8 @@ export class StudentPortalComponent implements OnInit {
       additionalInfo: this.additionalInfo,
       educationalBackground: this.educationalBackground,
       workBackground: this.workBackground,
-      programmeDetails: this.programmeDetails
+      programmeDetails: this.programmeDetails,
+      paymentDetails: this.paymentDetails
     });
     
     alert('Application submitted successfully! You will receive a confirmation email shortly.');
@@ -236,6 +241,8 @@ export class StudentPortalComponent implements OnInit {
            this.programmeDetails.hasLibrary)
         );
       case 4:
+        return !!this.paymentDetails.sourceOfFunding;
+      case 5:
         return this.termsAccepted;
       default:
         return true;

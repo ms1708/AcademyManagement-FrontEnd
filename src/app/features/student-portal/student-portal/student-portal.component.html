@@ -161,7 +161,7 @@
           <!-- Subtitle Section -->
           <div class="content-header">
             <div class="header-text">
-              <p class="main-subtitle">Complete your course application in 4 simple steps</p>
+              <p class="main-subtitle">Complete your course application in 5 simple steps</p>
             </div>
           </div>
 
@@ -188,9 +188,15 @@
             </div>
             <div class="progress-step">
               <div class="step-line" [class.completed]="currentStep >= 4"></div>
+              <svg class="step-arrow" width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6.33301 12L10.333 8L6.33301 4" stroke="#7E2549" stroke-opacity="0.4" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="progress-step">
+              <div class="step-line" [class.completed]="currentStep >= 5"></div>
             </div>
           </div>
-          <div class="step-text">Step {{ currentStep }} of 4</div>
+          <div class="step-text">Step {{ currentStep }} of 5</div>
         </div>
 
         <!-- Form Card -->
@@ -451,8 +457,48 @@
               </div>
             </div>
 
-            <!-- Step 4: Review and Confirmation Section -->
-            <div class="review-confirmation-section" *ngIf="currentStep === 4">
+            <!-- Step 4: Payment Details Section -->
+            <div class="payment-details-section" *ngIf="currentStep === 4">
+              <h2 class="section-title">Payment Details</h2>
+
+              <!-- Source of Funding -->
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Source of Funding</label>
+                  <select class="form-select" [(ngModel)]="paymentDetails.sourceOfFunding" (ngModelChange)="onFormChange()">
+                    <option value="">Select Source of Funding</option>
+                    <option value="self-funded">Self-Funded</option>
+                    <option value="employer-sponsored">Employer Sponsored</option>
+                    <option value="government-grant">Government Grant</option>
+                    <option value="bursary">Bursary</option>
+                    <option value="scholarship">Scholarship</option>
+                    <option value="study-loan">Study Loan</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Important Information Box -->
+              <div class="important-info-box">
+                <h3 class="important-info-title">Important Information</h3>
+                <ul class="important-info-list">
+                  <li>Applications will be reviewed within 5 business days</li>
+                  <li>You will be notified via email once your application is processed</li>
+                  <li>Approved applications will receive enrolment instructions</li>
+                </ul>
+              </div>
+
+              <!-- Terms and Conditions -->
+              <div class="terms-section">
+                <label class="checkbox-label large">
+                  <input type="checkbox" [(ngModel)]="termsAccepted">
+                  <span class="checkbox-text">I have read and agree to the <a href="#" class="terms-link">Course Application Terms and Conditions</a></span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Step 5: Final Confirmation Section -->
+            <div class="review-confirmation-section" *ngIf="currentStep === 5">
               <h2 class="section-title">Review Your Application</h2>
               <p class="section-description">Please review all the information before submitting your application</p>
 
@@ -615,6 +661,20 @@
                 </div>
               </div>
 
+              <!-- Step 4 Review: Payment Details -->
+              <div class="review-card">
+                <div class="review-header">
+                  <h3 class="review-section-title">Step 4: Payment Details</h3>
+                  <button class="edit-btn" (click)="currentStep = 4">Edit</button>
+                </div>
+                <div class="review-content">
+                  <div class="review-row">
+                    <span class="review-label">Source of Funding:</span>
+                    <span class="review-value">{{ paymentDetails.sourceOfFunding | titlecase }}</span>
+                  </div>
+                </div>
+              </div>
+
               <!-- Terms and Conditions -->
               <div class="terms-section">
                 <label class="checkbox-label large">
@@ -636,8 +696,8 @@
             </button>
             
             <button class="next-btn" (click)="nextStep()">
-              <span class="btn-text">{{ currentStep === 4 ? 'Submit Application' : 'Next' }}</span>
-              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="currentStep !== 4">
+              <span class="btn-text">{{ currentStep === 5 ? 'Submit Application' : 'Next' }}</span>
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg" *ngIf="currentStep !== 5">
                 <path d="M7.83301 15.5L12.833 10.5L7.83301 5.5" stroke="white" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
