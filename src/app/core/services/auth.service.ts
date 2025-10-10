@@ -204,6 +204,26 @@ export class AuthService {
       })
     );
   }
+  verifyOTP(email: string, otptext: string): Observable<any> {
+    const payload = {
+      userName: email,
+      otpText: otptext,
+    };
+
+    return this.apiService.post('Account/ValidateOtp', payload).pipe(
+      tap(() => {
+        this.errorLoggingService.logError('info', `OTP verification attempted for: ${email}`);
+      }),
+      catchError(error => {
+        this.errorLoggingService.logErrorWithStack('OTP verification failed', error as Error, {
+          email,
+          otptext,
+        });
+        throw error;
+      })
+    );
+  }
+
   /**
    * Checks if the current user has admin role
    * @returns True if user is admin

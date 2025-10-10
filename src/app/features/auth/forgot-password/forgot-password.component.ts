@@ -47,7 +47,9 @@ export class ForgotPasswordComponent {
           this.errorLoggingService.logError('info', `Password reset email sent to: ${email}`);
           // Move to OTP verification step
           this.router.navigate(['/auth/forgot-password-verify'], {
-            queryParams: { type: 'reset', email: email },
+            state: {
+              email: email,
+            },
           });
         },
         error: (error: unknown) => {

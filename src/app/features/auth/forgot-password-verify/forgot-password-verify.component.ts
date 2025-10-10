@@ -1,7 +1,10 @@
-import { Component, ElementRef, OnInit, ViewChildren, QueryList } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChildren, QueryList, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../../core/services/auth.service';
+import { ErrorLoggingService } from '../../../core/services/error-logging.service';
+import Swal from 'sweetalert2';
 
 /**
  * Forgot Password Verify Component
@@ -13,17 +16,21 @@ import { Router, ActivatedRoute } from '@angular/router';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './forgot-password-verify.component.html',
-  styleUrls: ['./forgot-password-verify.component.scss']
+  styleUrls: ['./forgot-password-verify.component.scss'],
 })
 export class ForgotPasswordVerifyComponent implements OnInit {
   // Reference to all OTP input fields for focus management
-  @ViewChildren('digit1,digit2,digit3,digit4,digit5') digitInputs!: QueryList<ElementRef<HTMLInputElement>>;
+  @ViewChildren('digit1,digit2,digit3,digit4,digit5,digit6') digitInputs!: QueryList<
+    ElementRef<HTMLInputElement>
+  >;
 
   // Store individual digits of the 5-digit verification code
   verificationCode: string[] = ['', '', '', '', ''];
   isLoading = false;
-  email: string | null = null;
+  email: string = '';
   verificationType: string | null = null; // 'email' or 'reset'
+  private authService = inject(AuthService);
+  private errorLoggingService = inject(ErrorLoggingService);
 
   constructor(
     private router: Router,
@@ -31,11 +38,10 @@ export class ForgotPasswordVerifyComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    const nav = this.router.getCurrentNavigation();
+
     // Read email and verification type from URL query params
-    this.activatedRoute.queryParams.subscribe(params => {
-      this.email = params['email'] || null;
-      this.verificationType = params['type'] || 'email';
-    });
+    this.email = nav?.extras.state?.['email'] || '';
 
     // Auto-focus first input for better UX
     setTimeout(() => {
@@ -50,7 +56,7 @@ export class ForgotPasswordVerifyComponent implements OnInit {
   onDigitInput(event: Event, index: number): void {
     const input = event.target as HTMLInputElement;
     const value = input.value;
-    
+
     // Only accept numeric digits
     if (value && !/^\d$/.test(value)) {
       input.value = '';
@@ -83,7 +89,7 @@ export class ForgotPasswordVerifyComponent implements OnInit {
         }
       }
     }
-    
+
     // Arrow keys for navigation between fields
     if (event.key === 'ArrowLeft' && index > 0) {
       const prevInput = this.digitInputs.toArray()[index - 1]?.nativeElement;
@@ -91,7 +97,7 @@ export class ForgotPasswordVerifyComponent implements OnInit {
         prevInput.focus();
       }
     }
-    
+
     if (event.key === 'ArrowRight' && index < 4) {
       const nextInput = this.digitInputs.toArray()[index + 1]?.nativeElement;
       if (nextInput) {
@@ -113,30 +119,33 @@ export class ForgotPasswordVerifyComponent implements OnInit {
 
   // Handle pasted OTP codes from clipboard
   private handlePaste(): void {
-    navigator.clipboard.readText().then(text => {
-      const digits = text.replace(/\D/g, '').split('').slice(0, 5);
-      if (digits.length > 0) {
-        digits.forEach((digit, index) => {
-          if (index < 5) {
-            this.verificationCode[index] = digit;
-            const input = this.digitInputs.toArray()[index]?.nativeElement;
-            if (input) {
-              input.value = digit;
+    navigator.clipboard
+      .readText()
+      .then(text => {
+        const digits = text.replace(/\D/g, '').split('').slice(0, 5);
+        if (digits.length > 0) {
+          digits.forEach((digit, index) => {
+            if (index < 5) {
+              this.verificationCode[index] = digit;
+              const input = this.digitInputs.toArray()[index]?.nativeElement;
+              if (input) {
+                input.value = digit;
+              }
             }
+          });
+
+          // Focus next empty field or last field if all filled
+          const nextEmptyIndex = this.verificationCode.findIndex(code => !code);
+          const focusIndex = nextEmptyIndex === -1 ? 4 : nextEmptyIndex;
+          const targetInput = this.digitInputs.toArray()[focusIndex]?.nativeElement;
+          if (targetInput) {
+            targetInput.focus();
           }
-        });
-        
-        // Focus next empty field or last field if all filled
-        const nextEmptyIndex = this.verificationCode.findIndex(code => !code);
-        const focusIndex = nextEmptyIndex === -1 ? 4 : nextEmptyIndex;
-        const targetInput = this.digitInputs.toArray()[focusIndex]?.nativeElement;
-        if (targetInput) {
-          targetInput.focus();
         }
-      }
-    }).catch(err => {
-      console.warn('Could not read clipboard contents: ', err);
-    });
+      })
+      .catch(err => {
+        console.warn('Could not read clipboard contents: ', err);
+      });
   }
 
   // Check if all 5 digits are entered
@@ -153,6 +162,28 @@ export class ForgotPasswordVerifyComponent implements OnInit {
     this.isLoading = true;
     const code = this.verificationCode.join('');
 
+    this.authService.verifyOTP(this.email, code).subscribe({
+      next: () => {
+        this.isLoading = false;
+        this.errorLoggingService.logError('info', `OTP verify: ${code}`);
+        // Move to OTP verification step
+        // this.router.navigate(['/auth/forgot-password-verify'], {
+        //   queryParams: { type: 'reset', email: email },
+        // });
+      },
+      error: (error: unknown) => {
+        this.isLoading = false;
+        Swal.fire({
+          icon: 'error',
+          title: 'OTP  Not Matched',
+          text: 'OTP is Wrong.',
+          confirmButtonColor: '#3085d6',
+        });
+        this.errorLoggingService.logErrorWithStack('Password reset failed', error as Error);
+        console.error('Password reset error:', error);
+        // TODO: Show user-friendly error message
+      },
+    });
     // TODO: Replace with actual API verification
     setTimeout(() => {
       this.isLoading = false;
