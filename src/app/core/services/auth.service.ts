@@ -12,6 +12,7 @@ import {
   UpdateProfileRequest,
   UserRole,
 } from '../models/user.model';
+import { HttpParams } from '@angular/common/http';
 
 /**
  * Authentication service for managing user authentication state
@@ -205,12 +206,9 @@ export class AuthService {
     );
   }
   verifyOTP(email: string, otptext: string): Observable<any> {
-    const payload = {
-      userName: email,
-      otpText: otptext,
-    };
+    const params = new HttpParams().set('userName', email).set('otpText', otptext);
 
-    return this.apiService.post('Account/ValidateOtp', payload).pipe(
+    return this.apiService.post('Account/ValidateOtp', null, { httpOptions: { params } }).pipe(
       tap(() => {
         this.errorLoggingService.logError('info', `OTP verification attempted for: ${email}`);
       }),

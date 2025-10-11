@@ -35,14 +35,14 @@ export class ForgotPasswordVerifyComponent implements OnInit {
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute
-  ) {}
-
-  ngOnInit(): void {
+  ) {
     const nav = this.router.getCurrentNavigation();
 
     // Read email and verification type from URL query params
     this.email = nav?.extras.state?.['email'] || '';
+  }
 
+  ngOnInit(): void {
     // Auto-focus first input for better UX
     setTimeout(() => {
       const firstInput = this.digitInputs?.first?.nativeElement;
@@ -67,7 +67,7 @@ export class ForgotPasswordVerifyComponent implements OnInit {
     this.verificationCode[index] = value;
 
     // Move to next field automatically
-    if (value && index < 4) {
+    if (value && index < 5) {
       const nextInput = this.digitInputs.toArray()[index + 1]?.nativeElement;
       if (nextInput) {
         nextInput.focus();
@@ -98,7 +98,7 @@ export class ForgotPasswordVerifyComponent implements OnInit {
       }
     }
 
-    if (event.key === 'ArrowRight' && index < 4) {
+    if (event.key === 'ArrowRight' && index < 5) {
       const nextInput = this.digitInputs.toArray()[index + 1]?.nativeElement;
       if (nextInput) {
         nextInput.focus();
@@ -136,7 +136,7 @@ export class ForgotPasswordVerifyComponent implements OnInit {
 
           // Focus next empty field or last field if all filled
           const nextEmptyIndex = this.verificationCode.findIndex(code => !code);
-          const focusIndex = nextEmptyIndex === -1 ? 4 : nextEmptyIndex;
+          const focusIndex = nextEmptyIndex === -1 ? 5 : nextEmptyIndex;
           const targetInput = this.digitInputs.toArray()[focusIndex]?.nativeElement;
           if (targetInput) {
             targetInput.focus();
@@ -161,15 +161,12 @@ export class ForgotPasswordVerifyComponent implements OnInit {
 
     this.isLoading = true;
     const code = this.verificationCode.join('');
-
     this.authService.verifyOTP(this.email, code).subscribe({
       next: () => {
         this.isLoading = false;
         this.errorLoggingService.logError('info', `OTP verify: ${code}`);
         // Move to OTP verification step
-        // this.router.navigate(['/auth/forgot-password-verify'], {
-        //   queryParams: { type: 'reset', email: email },
-        // });
+        this.router.navigate(['/auth/create-password']);
       },
       error: (error: unknown) => {
         this.isLoading = false;
@@ -184,23 +181,6 @@ export class ForgotPasswordVerifyComponent implements OnInit {
         // TODO: Show user-friendly error message
       },
     });
-    // TODO: Replace with actual API verification
-    setTimeout(() => {
-      this.isLoading = false;
-
-      console.log('Verifying code:', code);
-      console.log('Email:', this.email);
-      console.log('Verification type:', this.verificationType);
-
-      // Route based on verification purpose
-      if (this.verificationType === 'reset') {
-        alert('Code verified! Please create a new password.');
-        this.router.navigate(['/auth/create-password']);
-      } else {
-        alert('Email verified successfully!');
-        this.router.navigate(['/auth/signin']);
-      }
-    }, 2000);
   }
 
   // Resend verification code to user's email

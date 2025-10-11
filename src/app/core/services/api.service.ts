@@ -75,11 +75,24 @@ export class ApiService {
    * @param timeoutMs - Request timeout in milliseconds
    * @returns Observable of API response
    */
-  post<T>(endpoint: string, data: unknown, timeoutMs?: number): Observable<T> {
+  post<T>(
+    endpoint: string,
+    data: unknown,
+    options?: {
+      httpOptions?: { headers?: HttpHeaders; params?: HttpParams; [key: string]: any };
+      timeoutMs?: number;
+    }
+  ): Observable<T> {
     const url = `${this.baseUrl}/${endpoint}`;
-    const timeoutValue = timeoutMs || this.defaultTimeout;
+    const timeoutValue = options?.timeoutMs || this.defaultTimeout;
+
+    const httpOptions = {
+      ...this.getDefaultHeaders(),
+      ...(options?.httpOptions || {}),
+    };
+
     return this.http
-      .post<T>(url, data, this.getDefaultHeaders())
+      .post<T>(url, data, httpOptions)
       .pipe(
         timeout(timeoutValue),
         retry(this.retryAttempts),
